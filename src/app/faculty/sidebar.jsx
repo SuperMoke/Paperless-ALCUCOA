@@ -11,7 +11,6 @@ import {
   ClipboardDocumentListIcon,
   FolderIcon,
   UserGroupIcon,
-  DocumentChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -61,7 +60,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/ovpa"
+                  href="/faculty"
                   className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
                   onClick={toggleSidebar}
                 >
@@ -69,21 +68,9 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   <Typography className="text-lg">Home</Typography>
                 </Link>
               </li>
-
               <li>
                 <Link
-                  href="/ovpa/ovpa_studentdata"
-                  className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
-                  onClick={toggleSidebar}
-                >
-                  <DocumentChartBarIcon className="h-6 w-6" />
-                  <Typography className="text-lg">Student Data</Typography>
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="/ovpa/ovpa_files"
+                  href="/faculty/faculty_files"
                   className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
                   onClick={toggleSidebar}
                 >

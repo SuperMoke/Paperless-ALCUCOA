@@ -23,6 +23,7 @@ import { isAuthenticated } from "../../utils/auth";
 import Header from "../header";
 import Sidebar from "../sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast, ToastContainer } from "react-toastify";
 
 // New CreateAccountModal component
 const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
@@ -69,6 +70,13 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
       program,
       yearLevel,
     });
+    setEmail("");
+    setInstitute("");
+    setAccountLevel("");
+    setName("");
+    setIDnumber("");
+    setProgram("");
+    setYearLevel("");
     onClose();
   };
 
@@ -149,7 +157,7 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
                 Institute of Computing Studies and Library Information Science
               </Option>
               <Option value="IEAS">
-                Institute of Education,Arts and Sciences
+                Institute of Education, Arts and Sciences
               </Option>
 
               <Option value="IBM">Institute of Business and Management</Option>
@@ -248,13 +256,13 @@ export default function HRAccount() {
       if (response.ok) {
         console.log("User created successfully:", data.uid);
         setIsCreateModalOpen(false);
-        // You might want to refresh the users list here
+        toast.success("Account created successfully");
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error creating user:", error.message);
-      // You might want to show an error message to the user here
+      toast.error("Error creating account. Please try again");
     }
   };
 
@@ -271,11 +279,13 @@ export default function HRAccount() {
       const data = await response.json();
       if (response.ok) {
         console.log("User deleted successfully");
+        toast.success("Account deleted successfully");
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error deleting user:", error.message);
+      toast.success("Error creating account. Please try again");
     }
   };
 
@@ -353,6 +363,7 @@ export default function HRAccount() {
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreateAccount}
       />
+      <ToastContainer />
     </div>
   ) : null;
 }

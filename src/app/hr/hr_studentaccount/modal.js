@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/app/firebase"; // Ensure you have your firebase configuration and initialization in this file
+import { toast } from "react-toastify";
 
 const Modal = ({ user, onClose }) => {
   const [name, setName] = useState(user.name);
@@ -54,6 +55,7 @@ const Modal = ({ user, onClose }) => {
       });
 
       onClose();
+      toast.success("User updated successfully!");
     } catch (error) {
       console.error("Error updating user: ", error);
     }
@@ -130,7 +132,7 @@ const Modal = ({ user, onClose }) => {
                 Institute of Computing Studies and Library Information Science
               </Option>
               <Option value="IEAS">
-                Institute of Education,Arts and Sciences
+                Institute of Education, Arts and Sciences
               </Option>
 
               <Option value="IBM">Institute of Business and Management</Option>

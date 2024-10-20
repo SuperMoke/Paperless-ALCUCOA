@@ -1,6 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Button from "@material-tailwind/react/components/Button";
+import {
+  Button,
+  Typography,
+  Input,
+  Select,
+  Option,
+} from "@material-tailwind/react";
 import { db, storage, auth } from "@/app/firebase";
 import {
   uploadBytesResumable,
@@ -19,31 +25,18 @@ import {
   getDocs,
   deleteDoc,
   onSnapshot,
-  orderBy,
-  limit,
-  getFirestore,
 } from "firebase/firestore";
-import { Progress, Typography } from "@material-tailwind/react";
-import Card from "@material-tailwind/react/components/Card";
-import CardBody from "@material-tailwind/react/components/Card/CardBody";
-import Input from "@material-tailwind/react/components/Input";
 import { onAuthStateChanged } from "firebase/auth";
-import { Select, Option } from "@material-tailwind/react";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import {
-  DocumentTextIcon,
-  TrashIcon,
-  BellIcon,
-} from "@heroicons/react/24/outline";
-import Header from "./header";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
-import { isAuthenticated } from "../utils/auth";
+import { isAuthenticated } from "../../utils/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "./sidebar";
+import { DocumentTextIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Header from "../header";
+import Sidebar from "../sidebar";
 
-export default function UserHomepage() {
+export default function FacultyFiles() {
   const [files, setFiles] = useState(Array(9).fill(null));
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -55,8 +48,6 @@ export default function UserHomepage() {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [user, loading] = useAuthState(auth);
-  const [announcements, setAnnouncements] = useState([]);
-  const [facultyFiles, setFacultyFiles] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [institute, setInstitute] = useState("");
@@ -79,8 +70,6 @@ export default function UserHomepage() {
     "Code of Professional Ethics/R.A. 6713 and other pertinent CSC issuances",
     "Faculty Development Program",
   ];
-
-  useEffect(() => {});
 
   useEffect(() => {
     if (loading) return;
@@ -116,23 +105,6 @@ export default function UserHomepage() {
   };
 
   useEffect(() => {
-    const q = query(
-      collection(db, "announcements"),
-      orderBy("timestamp", "desc"),
-      limit(5)
-    );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const announcementsList = [];
-      querySnapshot.forEach((doc) => {
-        announcementsList.push({ id: doc.id, ...doc.data() });
-      });
-      setAnnouncements(announcementsList);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const userId = user.uid;
@@ -156,7 +128,6 @@ export default function UserHomepage() {
           if (currentUser) {
             const userEmail = currentUser.email;
             console.log("User email:", userEmail);
-            const db = getFirestore();
             const userQuery = query(
               collection(db, "userdata"),
               where("email", "==", userEmail)
@@ -167,7 +138,6 @@ export default function UserHomepage() {
                   const userData = doc.data();
                   setName(userData.name);
                   setEmail(userData.email);
-
                   setInstitute(userData.institute);
                 });
               } else {
@@ -340,28 +310,6 @@ export default function UserHomepage() {
     }
   }, [user]);
 
-  const getFileInfo = (category) => {
-    const file = userFiles.find((file) => file.category === category);
-    return file
-      ? { status: file.status, remarks: file.remarks || "No remarks" }
-      : { status: "Not Submitted", remarks: "No file submitted" };
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "Pending":
-        return "text-yellow-500";
-      case "Verified":
-        return "text-green-500";
-      case "Failed":
-        return "text-red-500";
-      case "Not Submitted":
-        return "text-gray-500";
-      default:
-        return "text-gray-500";
-    }
-  };
-
   return isAuthorized ? (
     <>
       <div className="flex flex-col min-h-screen">
@@ -370,45 +318,111 @@ export default function UserHomepage() {
           <Sidebar />
           <div className="flex-1 p-4 sm:ml-64">
             <div className="container mx-auto px-4">
-              <div className="w-full mb-8">
-                <div>
-                  <Typography variant="h5" color="blue-gray" className="mb-4">
-                    Document Status
-                  </Typography>
-                  <table>
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Category
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Status
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Remarks
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {categories.map((category, index) => {
-                        const { status, remarks } = getFileInfo(category);
-                        return (
-                          <tr key={index}>
-                            <td className="px-6 py-4 ">{category}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={getStatusColor(status)}>
-                                {status}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              {remarks}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+              <Typography variant="h5" color="blue-gray" className="mb-4">
+                Upload Files
+              </Typography>
+              <div className="mt-8 mb-5">
+                <Typography color="blue-gray" className="mb-4">
+                  Upload Requirements:
+                </Typography>
+                <Select
+                  label="Select Category"
+                  value={selectedCategory}
+                  onChange={handleCategoryChange}
+                >
+                  {categories.map((category, index) => (
+                    <Option key={index} value={category}>
+                      {category}
+                    </Option>
+                  ))}
+                </Select>
+                {selectedCategory && (
+                  <>
+                    <h2 className="text-black mr-2 mt-4 mb-2">
+                      {selectedCategory}:
+                    </h2>
+                    <div className="relative flex w-full max-w-96 items-center">
+                      <Input
+                        type="file"
+                        size="md"
+                        onChange={(e) =>
+                          handleFileChange(
+                            e,
+                            categories.indexOf(selectedCategory)
+                          )
+                        }
+                        className="pr-20 pt-2"
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        disabled={
+                          !files[categories.indexOf(selectedCategory)] ||
+                          uploading
+                        }
+                        color={
+                          files[categories.indexOf(selectedCategory)]
+                            ? "green"
+                            : "gray"
+                        }
+                        className="!absolute right-1 top-1 rounded bg-green-900"
+                        onClick={() =>
+                          handleUpload(categories.indexOf(selectedCategory))
+                        }
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+              <Typography color="blue-gray" className="mb-4 font-bold">
+                My Files
+              </Typography>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {categories.map((category, index) => {
+                  const categoryFiles = userFiles.filter(
+                    (file) => file.category === category
+                  );
+                  return (
+                    <div key={index} className="p-2 border rounded">
+                      <Typography
+                        color="blue-gray"
+                        className="font-semibold mb-2"
+                      >
+                        {category}
+                      </Typography>
+                      {categoryFiles.length > 0 ? (
+                        categoryFiles.map((file, fileIndex) => (
+                          <div
+                            key={fileIndex}
+                            className="flex items-center justify-between text-sm text-gray-600 mb-2"
+                          >
+                            <span className="truncate max-w-[70%]">
+                              {file.name}
+                            </span>
+                            <div className="flex items-center space-x-2">
+                              <DocumentTextIcon
+                                className="h-5 w-5 text-blue-500 cursor-pointer"
+                                onClick={() => window.open(file.url, "_blank")}
+                              />
+                              <TrashIcon
+                                className="h-5 w-5 text-red-500 cursor-pointer"
+                                onClick={() => handleDeleteFile(file)}
+                              />
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <Typography color="gray" className="text-sm italic">
+                          No files uploaded for this category.
+                        </Typography>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

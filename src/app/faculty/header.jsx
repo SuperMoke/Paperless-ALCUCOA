@@ -11,9 +11,8 @@ import {
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
-  ArchiveBoxIcon,
-  Bars3Icon,
   ArrowRightOnRectangleIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/outline";
 import {
   getFirestore,
@@ -80,27 +79,16 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-blue-gray-50 shadow-md py-4 px-4 sm:px-10 flex justify-between items-center">
-      <Link href="/faculty">
-        <Image src={"/Logo.png"} width={60} height={60} alt="Logo"></Image>
-      </Link>
-      <Link href="/faculty">
-        <Typography variant="h5" className="font-semibold ml-5">
-          Paperless Alcucoa System
-        </Typography>
-      </Link>
+    <header className="bg-white shadow-md py-4 px-4 sm:px-10 flex justify-between items-center">
       <div className="flex items-center space-x-4 ml-auto">
-        <Link
-          href="/faculty/faculty_portfolio"
-          className="flex items-center gap-3 p-2 mr-2 rounded-md"
-        >
-          <ArchiveBoxIcon className="h-6 w-6" />
-          <Typography className="text-lg">Portfolio</Typography>
-        </Link>
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
           <MenuHandler>
             <div className="flex items-center space-x-2 cursor-pointer">
-              <Avatar src={profileUrl || "/Avatar.jpg"} alt="User" size="s" />
+              <Avatar
+                src={profileUrl || "/Avatar.jpg"}
+                alt="Profile"
+                size="s"
+              />
               <Typography
                 variant="small"
                 className="text-base hidden sm:block "
@@ -111,7 +99,7 @@ export default function Header() {
           </MenuHandler>
           <MenuList>
             <MenuItem className="flex items-center gap-2">
-              <Link href="/faculty/faculty_profile">
+              <Link href="/student/student_profile">
                 <Button variant="text" className="flex items-start gap-3">
                   <UserCircleIcon className="h-4 w-4" />
                   Profile

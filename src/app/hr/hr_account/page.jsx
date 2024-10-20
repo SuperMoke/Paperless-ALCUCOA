@@ -24,6 +24,7 @@ import { isAuthenticated } from "../../utils/auth";
 import Header from "../header";
 import Sidebar from "../sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { toast, ToastContainer } from "react-toastify";
 
 // New CreateAccountModal component
 const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
@@ -48,6 +49,14 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
       position,
       status,
     });
+    setEmail("");
+    setPassword("");
+    setInstitute("");
+    setAccountLevel("");
+    setName("");
+    setIDnumber("");
+    setPosition("");
+    setStatus("");
     onClose();
   };
 
@@ -148,7 +157,7 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
                 Institute of Computing Studies and Library Information Science
               </Option>
               <Option value="IEAS">
-                Institute of Education,Arts and Sciences
+                Institute of Education, Arts and Sciences
               </Option>
 
               <Option value="IBM">Institute of Business and Management</Option>
@@ -166,7 +175,7 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
               <Option value="faculty">FACULTY</Option>
               <Option value="admin">ADMIN</Option>
               <Option value="ovpa">OVPA</Option>
-              <Option value="hr">Human Resource</Option>
+              <Option value="hr">HR</Option>
             </Select>
           </div>
 
@@ -210,7 +219,7 @@ export default function HRAccount() {
   useEffect(() => {
     const q = query(
       collection(db, "userdata"),
-      where("role", "in", ["admin", "faculty", "ovpa", "hr"])
+      where("role", "in", ["admin", "faculty", "ovpa", "hr", "student"])
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -248,13 +257,13 @@ export default function HRAccount() {
       if (response.ok) {
         console.log("User created successfully:", data.uid);
         setIsCreateModalOpen(false);
-        // You might want to refresh the users list here
+        toast.success("Account created successfully");
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error creating user:", error.message);
-      // You might want to show an error message to the user here
+      toast.error("Error creating account. Please try again");
     }
   };
 
@@ -271,11 +280,13 @@ export default function HRAccount() {
       const data = await response.json();
       if (response.ok) {
         console.log("User deleted successfully");
+        toast.success("User deleted successfully"); // Show success toast
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error deleting user:", error.message);
+      toast.error("Error deleting user. Please try again"); // Show error toast
     }
   };
 
@@ -350,6 +361,7 @@ export default function HRAccount() {
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreateAccount}
       />
+      <ToastContainer />
     </div>
   ) : null;
 }
