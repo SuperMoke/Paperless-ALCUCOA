@@ -90,6 +90,16 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   <Typography className="text-lg">Account</Typography>
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/hr/hr_studentaccount"
+                  className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
+                  onClick={toggleSidebar}
+                >
+                  <UserGroupIcon className="h-6 w-6" />
+                  <Typography className="text-lg">Student Account</Typography>
+                </Link>
+              </li>
             </ul>
           </nav>
           <div className="mt-auto ">

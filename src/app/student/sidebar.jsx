@@ -68,17 +68,6 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                   <Typography className="text-lg">Home</Typography>
                 </Link>
               </li>
-
-              <li>
-                <Link
-                  href="/ovpa/ovpa_files"
-                  className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
-                  onClick={toggleSidebar}
-                >
-                  <FolderIcon className="h-6 w-6" />
-                  <Typography className="text-lg">Files</Typography>
-                </Link>
-              </li>
             </ul>
           </nav>
           <div className="mt-auto ">

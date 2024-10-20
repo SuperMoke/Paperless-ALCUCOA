@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Model } from "survey-core";
 import { Survey } from "survey-react-ui";
 import "survey-core/defaultV2.min.css";
-import { json } from "./json";
+import { jsonArea2 } from "./jsonArea2";
+import { jsonArea3 } from "./jsonArea3";
 import { FlatLight } from "survey-core/themes";
 import {
   Card,
@@ -12,11 +13,14 @@ import {
   ListItem,
 } from "@material-tailwind/react";
 
-function SurveyComponent() {
+function SurveyComponent({ area }) {
   const [meanValues, setMeanValues] = useState({});
   const [comments, setComments] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
-  const survey = new Model(json);
+
+  const surveyConfig = area === "Area II: Faculty" ? jsonArea2 : jsonArea3;
+
+  const survey = new Model(surveyConfig);
 
   useEffect(() => {
     const savedData = localStorage.getItem("surveyData");
@@ -43,7 +47,7 @@ function SurveyComponent() {
       const pageMean = calculatePageMean(currentPage.questions);
       sender.setValue(`${currentPage.name}_mean`, pageMean);
     }
-    localStorage.setItem("surveyData", JSON.stringify(sender.data));
+    localStorage.setItem(`surveyData_${area}`, JSON.stringify(sender.data));
   });
 
   survey.onComplete.add((sender, options) => {
@@ -62,7 +66,7 @@ function SurveyComponent() {
       });
     });
     console.log(JSON.stringify(results, null, 3));
-    localStorage.setItem("surveyData", JSON.stringify(results));
+    localStorage.setItem(`surveyData_${area}`, JSON.stringify(results));
     setMeanValues(meanValues);
     setComments(comments);
     setIsCompleted(true);

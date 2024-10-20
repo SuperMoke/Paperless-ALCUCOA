@@ -1,4 +1,4 @@
-export const json = {
+export const jsonArea2 = {
   description: "AREA II: FACULTY",
   logoPosition: "right",
   pages: [

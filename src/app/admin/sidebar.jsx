@@ -13,6 +13,7 @@ import {
   UserGroupIcon,
   ClipboardIcon,
   ArchiveBoxIcon,
+  DocumentChartBarIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -101,12 +102,22 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               </li>
               <li>
                 <Link
-                  href="/admin/admin_files"
+                  href="/admin/admin_studentforms"
                   className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
                   onClick={toggleSidebar}
                 >
                   <AcademicCapIcon className="h-6 w-6" />
                   <Typography className="text-lg">Student Form</Typography>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/admin_studentdata"
+                  className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
+                  onClick={toggleSidebar}
+                >
+                  <DocumentChartBarIcon className="h-6 w-6" />
+                  <Typography className="text-lg">Student Data</Typography>
                 </Link>
               </li>
               <li>

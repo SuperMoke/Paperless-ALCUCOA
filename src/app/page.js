@@ -45,6 +45,8 @@ export default function Login() {
             router.push("/ovpa");
           } else if (role === "hr") {
             router.push("/hr");
+          } else if (role === "student") {
+            router.push("/student");
           } else {
             toast.error("There is something wrong with the user role");
           }
