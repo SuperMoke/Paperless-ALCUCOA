@@ -83,7 +83,7 @@ function SurveyComponent({ uid, email, surveyData }) {
       });
 
       setIsSaved(true);
-      console.log("Survey data saved to Firebase");
+      window.location.reload();
     } catch (error) {
       console.error("Error saving survey data: ", error);
     }

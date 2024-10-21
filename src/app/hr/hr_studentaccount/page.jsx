@@ -60,6 +60,14 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate email domain
+    const emailDomain = email.split("@")[1];
+    if (emailDomain !== "cca.edu.ph") {
+      toast.error("Email domain must be @cca.edu.ph");
+      return;
+    }
+
     onSubmit({
       email,
       password: defaultPassword,
@@ -191,6 +199,7 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
         </form>
       </Card>
+      <ToastContainer />
     </div>
   );
 };

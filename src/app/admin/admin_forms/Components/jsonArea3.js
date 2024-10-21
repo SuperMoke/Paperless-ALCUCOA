@@ -1,5 +1,4 @@
 export const jsonArea3 = {
-  title: "ALCU COMMISSION ON ACCREDITATION SURVEY FORM",
   description: "AREA III: CURRICULUM AND INSTRUCTION",
   logoPosition: "right",
   pages: [

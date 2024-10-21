@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SurveyComponent from "./Components/SurveyComponent";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import Sidebar from "../sidebar";
 
 export default function FacultyPortfolio() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -66,21 +67,24 @@ export default function FacultyPortfolio() {
 
   return isAuthorized ? (
     <>
-      <div className="bg-white min-h-screen ">
-        <div className="flex-1">
-          <Header />
-          <div className="flex flex-col items-center h-[calc(100vh-64px)]  pt-16">
-            <Typography variant="h2" className="mb-8 text-center text-black">
-              Faculty Portfolio
-            </Typography>
-            <div className="container mx-auto">
-              {user && (
-                <SurveyComponent
-                  uid={user.uid}
-                  email={email}
-                  surveyData={surveyData}
-                />
-              )}
+      <div className="flex flex-col bg-white min-h-screen ">
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <div className="flex-1 p-4 sm:ml-64">
+            <div className="container mx-auto px-4">
+              <Typography variant="h2" className="mb-8 text-center text-black">
+                Faculty Portfolio
+              </Typography>
+              <div className="container mx-auto">
+                {user && (
+                  <SurveyComponent
+                    uid={user.uid}
+                    email={email}
+                    surveyData={surveyData}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

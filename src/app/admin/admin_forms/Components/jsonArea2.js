@@ -164,7 +164,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -196,7 +196,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -233,7 +233,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -265,7 +265,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -297,7 +297,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -406,7 +406,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -438,7 +438,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -470,7 +470,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -502,7 +502,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -533,7 +533,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -569,7 +569,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -600,7 +600,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -631,7 +631,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -662,7 +662,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -710,7 +710,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -742,7 +742,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -863,7 +863,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -899,7 +899,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -930,7 +930,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -961,7 +961,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -992,7 +992,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1040,7 +1040,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1072,7 +1072,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1204,7 +1204,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1252,7 +1252,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1284,7 +1284,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1353,7 +1353,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1412,7 +1412,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1460,7 +1460,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],
@@ -1492,7 +1492,7 @@ export const jsonArea2 = {
               text: "1",
             },
             {
-              value: "Item 6",
+              value: "0",
               text: "0",
             },
           ],

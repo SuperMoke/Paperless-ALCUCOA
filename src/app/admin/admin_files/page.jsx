@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect, useRef } from "react";
 import {
   Typography,
@@ -52,6 +51,8 @@ export default function AdminFiles() {
   const [files, setFiles] = useState([]);
   const [facultyFiles, setFacultyFiles] = useState([]);
   const [adminFiles, setAdminFiles] = useState([]);
+  const [ovpaFiles, setOvpaFiles] = useState([]);
+  const [hrFiles, setHrFiles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedInstitute, setSelectedInstitute] = useState("All");
 
@@ -163,6 +164,24 @@ export default function AdminFiles() {
 
     fetchFiles();
   }, [user]);
+
+  useEffect(() => {
+    const fetchHrFiles = () => {
+      const filesRef = collection(db, "hr_files");
+      const unsubscribe = onSnapshot(filesRef, (snapshot) => {
+        const filesData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setHrFiles(filesData);
+      });
+
+      return () => unsubscribe();
+    };
+
+    fetchHrFiles();
+  }, []);
+
   useEffect(() => {
     const filtered = facultyFiles.filter((file) => {
       const categoryMatch =
@@ -198,6 +217,7 @@ export default function AdminFiles() {
       }
     }
   };
+
   const recordFileView = async (fileId, fileName) => {
     if (!user) return;
     try {
@@ -482,7 +502,7 @@ export default function AdminFiles() {
                 </CardBody>
               </Card>
 
-              <Card className="w-full">
+              <Card className="w-full mb-8">
                 <CardBody>
                   <Typography variant="h5" color="blue-gray" className="mb-4">
                     Uploaded Files
@@ -534,6 +554,63 @@ export default function AdminFiles() {
                       </div>
                     ))}
                   </div>
+                </CardBody>
+              </Card>
+
+              <Card className="w-full mb-8">
+                <CardBody>
+                  <Typography variant="h5" color="blue-gray" className="mb-4">
+                    HR Files
+                  </Typography>
+                  <table className="min-w-full divide-y divide-gray-200 mt-2">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          File Name
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Uploaded By
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Upload Date
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {[...ovpaFiles, ...hrFiles].map((file, index) => (
+                        <tr key={index}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {file.name}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {file.user_name}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {file.timestamp
+                              ? new Date(
+                                  file.timestamp.toDate()
+                                ).toLocaleDateString()
+                              : "N/A"}
+                          </td>
+
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center space-x-2 ">
+                              <DocumentTextIcon
+                                className="h-5 w-5 text-blue-500 cursor-pointer"
+                                onClick={() => {
+                                  recordFileView(file.id, file.name);
+                                  window.open(file.url, "_blank");
+                                }}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </CardBody>
               </Card>
             </div>

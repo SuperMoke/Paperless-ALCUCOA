@@ -197,11 +197,15 @@ export default function HumanResource() {
       );
       await deleteObject(fileRef);
       console.log("File deleted successfully from storage");
-      await deleteDoc(doc(db, "ovpa_files", file.id));
+
+      // Delete the file metadata from the hr_files collection
+      await deleteDoc(doc(db, "hr_files", file.id));
       console.log("File metadata deleted successfully from Firestore");
+
       toast.success("File deleted successfully");
     } catch (error) {
       console.error("Error deleting file:", error);
+      toast.error("Error deleting file");
     }
   };
 

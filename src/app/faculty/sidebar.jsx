@@ -11,6 +11,7 @@ import {
   ClipboardDocumentListIcon,
   FolderIcon,
   UserGroupIcon,
+  ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { AiOutlineAudit } from "react-icons/ai";
@@ -76,6 +77,16 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                 >
                   <FolderIcon className="h-6 w-6" />
                   <Typography className="text-lg">Files</Typography>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/faculty/faculty_portfolio"
+                  className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
+                  onClick={toggleSidebar}
+                >
+                  <ArchiveBoxIcon className="h-6 w-6" />
+                  <Typography className="text-lg">Portfolio</Typography>
                 </Link>
               </li>
             </ul>

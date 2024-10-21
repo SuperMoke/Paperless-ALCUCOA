@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { isAuthenticated } from "@/app/utils/auth";
 import Header from "../header";
 import Sidebar from "../sidebar";
-import SurveyComponent from "./Components/SurveyComponent";
+import SurveyComponent_Area2 from "./Components/SurveyComponent_Area2";
+import SurveyComponent_Area3 from "./Components/SurveyComponent_Area3";
 
 export default function AdminForms() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -35,6 +36,17 @@ export default function AdminForms() {
   const handleAreaClick = (area) => {
     setSelectedArea(area);
     setHeaderText(area);
+  };
+
+  const renderSurveyComponent = () => {
+    switch (selectedArea) {
+      case "Area II: Faculty":
+        return <SurveyComponent_Area2 />;
+      case "Area III: Curriculum and Instruction":
+        return <SurveyComponent_Area3 />;
+      default:
+        return null;
+    }
   };
 
   return isAuthorized ? (
@@ -78,7 +90,7 @@ export default function AdminForms() {
                   </Card>
                 </div>
               ) : (
-                <SurveyComponent area={selectedArea} />
+                renderSurveyComponent()
               )}
             </div>
           </div>
