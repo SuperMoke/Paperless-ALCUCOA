@@ -17,14 +17,8 @@ import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
 
 const survey = new Model(json);
-survey.addNavigationItem({
-  id: "survey_save_as_file",
-  title: "Save as PDF",
-  action: () => {
-    savePdf(survey.data);
-  },
-});
 
+// Function to save the survey data as a PDF
 const savePdf = async (data) => {
   const surveyPDF = new SurveyPDF(json);
   surveyPDF.mode = "display";
@@ -39,8 +33,18 @@ const savePdf = async (data) => {
     },
     format: [210, 297],
   };
-  surveyPDF.save("survey_results.pdf", pdfOptions);
+  surveyPDF.save("portfolio.pdf", pdfOptions);
 };
+
+// Add a custom navigation item to the survey
+survey.addNavigationItem({
+  id: "survey_save_as_file",
+  title: "Save as PDF",
+  visibleIndex: 51,
+  action: () => {
+    savePdf(survey.data);
+  },
+});
 
 function SurveyComponent({ uid, email, surveyData }) {
   const [isSaved, setIsSaved] = useState(false);
@@ -92,11 +96,7 @@ function SurveyComponent({ uid, email, surveyData }) {
 
   survey.applyTheme(FlatLight);
 
-  return (
-    <div>
-      <Survey model={survey} />
-    </div>
-  );
+  return <Survey model={survey} />;
 }
 
 export default SurveyComponent;
