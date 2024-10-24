@@ -143,7 +143,7 @@ const BulletinBoard = ({
                 </>
               ) : (
                 <>
-                  {currentUserEmail === announcement.postedBy && ( // Conditional rendering
+                  {currentUserEmail === announcement.email && ( // Conditional rendering
                     <IconButton
                       variant="text"
                       size="sm"
@@ -155,7 +155,7 @@ const BulletinBoard = ({
                       <PencilIcon className="h-4 w-4" />
                     </IconButton>
                   )}
-                  {currentUserEmail === announcement.postedBy && ( // Conditional rendering
+                  {currentUserEmail === announcement.email && ( // Conditional rendering
                     <IconButton
                       variant="text"
                       size="sm"
@@ -297,6 +297,7 @@ export default function Admin() {
         content: newAnnouncement,
         timestamp: serverTimestamp(),
         postedBy: userProfile.name,
+        email: user.email,
         edited: false,
         editedAt: null,
       });

@@ -142,7 +142,7 @@ const BulletinBoard = ({
                 </>
               ) : (
                 <>
-                  {currentUserEmail === announcement.postedBy && ( // Conditional rendering
+                  {currentUserEmail === announcement.email && ( // Conditional rendering
                     <IconButton
                       variant="text"
                       size="sm"
@@ -154,7 +154,7 @@ const BulletinBoard = ({
                       <PencilIcon className="h-4 w-4" />
                     </IconButton>
                   )}
-                  {currentUserEmail === announcement.postedBy && ( // Conditional rendering
+                  {currentUserEmail === announcement.email && ( // Conditional rendering
                     <IconButton
                       variant="text"
                       size="sm"
@@ -263,7 +263,7 @@ export default function OVPA() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       if (user && user.email) {
-        const usersRef = collection(db, "users");
+        const usersRef = collection(db, "userdata");
         const q = query(usersRef, where("email", "==", user.email));
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
@@ -295,7 +295,8 @@ export default function OVPA() {
       await addDoc(collection(db, "announcements"), {
         content: newAnnouncement,
         timestamp: serverTimestamp(),
-        postedBy: userProfile ? userProfile.name : user.email,
+        postedBy: userProfile.name,
+        email: user.email,
         edited: false,
         editedAt: null,
       });
