@@ -16,37 +16,37 @@ import {
 import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
 
-function SurveyComponent({ uid, email, surveyData }) {
-  const survey = React.useMemo(() => new Model(json), []);
-  const [isSaved, setIsSaved] = useState(false);
+const survey = new Model(json);
 
-  // Function to save the survey data as a PDF
-  const savePdf = async (data) => {
-    const surveyPDF = new SurveyPDF(json);
-    surveyPDF.mode = "display";
-    surveyPDF.data = data;
-    const pdfOptions = {
-      fontSize: 12,
-      margins: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bot: 10,
-      },
-      format: [210, 297],
-    };
-    surveyPDF.save("portfolio.pdf", pdfOptions);
-  };
-
-  // Add a custom navigation item to the survey
-  survey.addNavigationItem({
-    id: "survey_save_as_file",
-    title: "Save as PDF",
-    visibleIndex: 51,
-    action: () => {
-      savePdf(survey.data);
+const savePdf = async (data) => {
+  const surveyPDF = new SurveyPDF(json);
+  surveyPDF.mode = "display";
+  surveyPDF.data = data;
+  const pdfOptions = {
+    fontSize: 12,
+    margins: {
+      left: 10,
+      right: 10,
+      top: 10,
+      bot: 10,
     },
-  });
+    format: [210, 297],
+  };
+  surveyPDF.save("portfolio.pdf", pdfOptions);
+};
+
+// Navigation item placed outside component
+survey.addNavigationItem({
+  id: "survey_save_as_file",
+  title: "Save as PDF",
+  visibleIndex: 51,
+  action: () => {
+    savePdf(survey.data);
+  },
+});
+
+function SurveyComponent({ uid, email, surveyData }) {
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     if (surveyData) {

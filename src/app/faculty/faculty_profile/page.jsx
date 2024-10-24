@@ -33,6 +33,7 @@ import Header from "../header";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { isAuthenticated } from "../../utils/auth";
 import { useRouter } from "next/navigation";
+import Sidebar from "../sidebar";
 
 export default function UserProfile() {
   const [name, setName] = useState("");
@@ -169,97 +170,100 @@ export default function UserProfile() {
 
   return isAuthorized ? (
     <>
-      <div className="bg-[#8d9e84] min-h-screen">
-        <div className="flex-1">
-          <Header />
-          <div className="flex flex-col items-center h-[calc(100vh-64px)]  pt-16">
-            <Typography variant="h2" className="mb-4 text-center">
-              User Profile
-            </Typography>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card className="w-96 p-8">
-                <div className="flex justify-center mb-6">
-                  {profileUrl ? (
-                    <Image
-                      src={profileUrl}
-                      width={200}
-                      height={200}
-                      alt="User Picture"
-                      className="w-40 h-40 rounded-full object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src="/Avatar.jpg"
-                      width={200}
-                      height={200}
-                      alt="User Picture"
-                      className="w-40 h-40 rounded-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col space-y-5">
-                  <Input type="file" onChange={handleFileChange}></Input>
-                  <Button color="green" onClick={handleUpload}>
-                    Upload Profile Photo
+      <div className=" bg-blue-gray-50 flex flex-col min-h-screen">
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-4 sm:ml-64">
+            <div className="container mx-auto px-4">
+              <Typography variant="h2" className="mb-4 text-center">
+                User Profile
+              </Typography>
+              <div className="flex flex-wrap justify-center gap-6">
+                <Card className="w-96 p-8">
+                  <div className="flex justify-center mb-6">
+                    {profileUrl ? (
+                      <Image
+                        src={profileUrl}
+                        width={200}
+                        height={200}
+                        alt="User Picture"
+                        className="w-40 h-40 rounded-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src="/Avatar.jpg"
+                        width={200}
+                        height={200}
+                        alt="User Picture"
+                        className="w-40 h-40 rounded-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-col space-y-5">
+                    <Input type="file" onChange={handleFileChange}></Input>
+                    <Button color="green" onClick={handleUpload}>
+                      Upload Profile Photo
+                    </Button>
+                  </div>
+                  <Typography color="gray" className="font-normal mt-2 mb-2">
+                    Student Name:
+                  </Typography>
+                  <Typography color="gray" className="font-bold mb-4">
+                    {name}
+                  </Typography>
+                  <Typography className="font-normal mb-2">Email:</Typography>
+                  <Typography color="gray" className="font-bold mb-4">
+                    {email}
+                  </Typography>
+                </Card>
+                <Card className="w-96 p-8">
+                  <Typography
+                    color="gray"
+                    className="text-xl font-bold mb-5 text-center"
+                  >
+                    Change Password
+                  </Typography>
+                  <div className="flex flex-col space-y-2">
+                    <Typography color="gray" className="font-bold mb-2 ">
+                      Current Password:
+                    </Typography>
+                    <Input
+                      label="Enter The Current Password"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    ></Input>
+                    <Typography color="gray" className="font-bold mb-2 ">
+                      New Password:
+                    </Typography>
+                    <Input
+                      label="Enter The New Password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                    ></Input>
+                    <Typography color="gray" className="font-bold mb-2 ">
+                      Confirm New Password:
+                    </Typography>
+                    <Input
+                      label="Confirm the New Password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                    ></Input>
+                  </div>
+                  <Button
+                    color="green"
+                    className="mt-5"
+                    onClick={handleChangePassword}
+                  >
+                    Submit
                   </Button>
-                </div>
-                <Typography color="gray" className="font-normal mt-2 mb-2">
-                  Student Name:
-                </Typography>
-                <Typography color="gray" className="font-bold mb-4">
-                  {name}
-                </Typography>
-                <Typography className="font-normal mb-2">Email:</Typography>
-                <Typography color="gray" className="font-bold mb-4">
-                  {email}
-                </Typography>
-              </Card>
-              <Card className="w-96 p-8">
-                <Typography
-                  color="gray"
-                  className="text-xl font-bold mb-5 text-center"
-                >
-                  Change Password
-                </Typography>
-                <div className="flex flex-col space-y-2">
-                  <Typography color="gray" className="font-bold mb-2 ">
-                    Current Password:
-                  </Typography>
-                  <Input
-                    label="Enter The Current Password"
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                  ></Input>
-                  <Typography color="gray" className="font-bold mb-2 ">
-                    New Password:
-                  </Typography>
-                  <Input
-                    label="Enter The New Password"
-                    type="password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  ></Input>
-                  <Typography color="gray" className="font-bold mb-2 ">
-                    Confirm New Password:
-                  </Typography>
-                  <Input
-                    label="Confirm the New Password"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  ></Input>
-                </div>
-                <Button
-                  color="green"
-                  className="mt-5"
-                  onClick={handleChangePassword}
-                >
-                  Submit
-                </Button>
-              </Card>
+                </Card>
+              </div>
             </div>
-          </div>
+          </main>
         </div>
       </div>
       <ToastContainer />

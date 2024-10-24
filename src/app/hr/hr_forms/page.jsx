@@ -16,7 +16,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { isAuthenticated } from "@/app/utils/auth";
 import { useRouter } from "next/navigation";
 import SurveyComponent from "./Components/SurveyComponent";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import Fuse from "fuse.js";
 
 export default function HRForm() {
   const [selectedInstitute, setSelectedInstitute] = useState("All");
@@ -26,6 +27,29 @@ export default function HRForm() {
   const [surveyData, setSurveyData] = useState(null);
   const [facultyName, setFacultyName] = useState("");
   const [error, setError] = useState("");
+  const [allSurveys, setAllSurveys] = useState([]);
+  // Fuse.js options for fuzzy search
+  const fuseOptions = {
+    keys: ["name", "institute"],
+    threshold: 0.3,
+    includeScore: true,
+  };
+
+  useEffect(() => {
+    if (!user) return;
+
+    // Real-time listener for surveys
+    const surveysRef = collection(db, "surveys");
+    const unsubscribe = onSnapshot(surveysRef, (snapshot) => {
+      const surveys = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAllSurveys(surveys);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
 
   useEffect(() => {
     if (loading) return;
@@ -41,26 +65,32 @@ export default function HRForm() {
     checkAuth();
   }, [user, loading, router]);
 
-  const fetchSurveyData = async () => {
-    if (user && facultyName) {
-      try {
-        const surveysRef = collection(db, "surveys");
-        const q = query(surveysRef, where("name", "==", facultyName));
-        const querySnapshot = await getDocs(q);
-        if (!querySnapshot.empty) {
-          const doc = querySnapshot.docs[0];
-          setSurveyData(doc.data().surveyData);
-          setError("");
-        } else {
-          setSurveyData(null);
-          setError("No survey data found for this faculty member.");
-        }
-      } catch (error) {
-        console.error("Error fetching survey data:", error);
-        setError("An error occurred while fetching survey data.");
+  useEffect(() => {
+    if (facultyName || selectedInstitute !== "All") {
+      const fuse = new Fuse(allSurveys, fuseOptions);
+
+      let searchResults = allSurveys;
+
+      if (facultyName) {
+        const fuseResults = fuse.search(facultyName);
+        searchResults = fuseResults.map((result) => result.item);
+      }
+
+      if (selectedInstitute !== "All") {
+        searchResults = searchResults.filter(
+          (survey) => survey.institute === selectedInstitute
+        );
+      }
+
+      if (searchResults.length > 0) {
+        setSurveyData(searchResults[0].surveyData);
+        setError("");
+      } else {
+        setSurveyData(null);
+        setError("No matching faculty found");
       }
     }
-  };
+  }, [facultyName, selectedInstitute, allSurveys]);
 
   return isAuthorized ? (
     <>
@@ -101,7 +131,6 @@ export default function HRForm() {
                         Institute of Business and Management
                       </Option>
                     </Select>
-                    <Button onClick={fetchSurveyData}>Fetch Survey Data</Button>
                   </div>
                   {error && <Typography color="red">{error}</Typography>}
                   {surveyData && <SurveyComponent surveyData={surveyData} />}
