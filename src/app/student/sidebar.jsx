@@ -60,7 +60,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="/ovpa"
+                  href="/student"
                   className="flex items-center gap-3 p-2 hover:bg-[#163e2a] rounded-md"
                   onClick={toggleSidebar}
                 >
