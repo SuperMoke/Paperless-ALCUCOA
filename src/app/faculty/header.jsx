@@ -99,7 +99,7 @@ export default function Header() {
           </MenuHandler>
           <MenuList>
             <MenuItem className="flex items-center gap-2">
-              <Link href="faculty/faculty_profile">
+              <Link href="/faculty/faculty_profile">
                 <Button variant="text" className="flex items-start gap-3">
                   <UserCircleIcon className="h-4 w-4" />
                   Profile
