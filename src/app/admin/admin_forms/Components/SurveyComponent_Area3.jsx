@@ -20,6 +20,7 @@ function SurveyComponent({ area }) {
   const [meanValues, setMeanValues] = useState({});
   const [comments, setComments] = useState({});
   const [isCompleted, setIsCompleted] = useState(false);
+  const [overallMean, setOverallMean] = useState(null);
 
   const surveyConfig = jsonArea2;
 
@@ -67,8 +68,32 @@ function SurveyComponent({ area }) {
     const results = { ...sender.data };
     const meanValues = {};
     const comments = {};
+    let totalSum = 0;
+    let totalCount = 0;
+
     sender.pages.forEach((page) => {
-      const pageMean = calculatePageMean(page.questions);
+      const pageQuestions = page.questions.filter(
+        (q) => q.getType() === "radiogroup"
+      );
+      const pageTotalQuestions = pageQuestions.length;
+      const pageSum = pageQuestions.reduce((acc, q) => {
+        const value = survey.getValue(q.name);
+        const numValue =
+          typeof value === "string"
+            ? parseFloat(value)
+            : typeof value === "number"
+            ? value
+            : 0;
+        return acc + numValue;
+      }, 0);
+
+      totalSum += pageSum;
+      totalCount += pageTotalQuestions;
+
+      const pageMean =
+        pageTotalQuestions > 0
+          ? Math.round((pageSum / pageTotalQuestions) * 10) / 10
+          : 0;
       results[`${page.name}_mean`] = pageMean;
       meanValues[page.title] = pageMean;
 
@@ -78,10 +103,15 @@ function SurveyComponent({ area }) {
         }
       });
     });
+
+    const overallMean =
+      totalCount > 0 ? Math.round((totalSum / totalCount) * 10) / 10 : 0;
+
     console.log(JSON.stringify(results, null, 3));
     localStorage.setItem(`surveyData_3`, JSON.stringify(results));
     setMeanValues(meanValues);
     setComments(comments);
+    setOverallMean(overallMean); // Set the overall mean
     setIsCompleted(true);
   });
 
@@ -142,8 +172,22 @@ function SurveyComponent({ area }) {
                       </td>
                     </tr>
                   ))}
+                  <tr>
+                    <td className="border border-gray-300 px-4 py-2 font-bold">
+                      Overall Mean
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 font-bold">
+                      {overallMean !== null ? overallMean.toFixed(1) : "-"}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 font-bold">
+                      {overallMean !== null
+                        ? getDescriptiveRating(overallMean)
+                        : "-"}
+                    </td>
+                  </tr>
                 </tbody>
               </table>
+
               <Typography variant="h6" color="blue-gray" className="mt-4">
                 Comments:
               </Typography>
