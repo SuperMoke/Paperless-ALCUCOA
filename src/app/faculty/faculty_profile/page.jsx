@@ -207,7 +207,7 @@ export default function UserProfile() {
                     </Button>
                   </div>
                   <Typography color="gray" className="font-normal mt-2 mb-2">
-                    Student Name:
+                    Faculty Name:
                   </Typography>
                   <Typography color="gray" className="font-bold mb-4">
                     {name}

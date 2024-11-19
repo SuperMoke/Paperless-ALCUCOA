@@ -189,7 +189,7 @@ export default function OVPAProfile() {
                     </Button>
                   </div>
                   <Typography color="gray" className="font-normal mt-6 mb-2">
-                    Admin Name:
+                    OVPA Name:
                   </Typography>
                   <Typography color="gray" className="font-bold mb-4">
                     {name}
