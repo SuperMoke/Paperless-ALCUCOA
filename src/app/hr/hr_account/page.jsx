@@ -330,35 +330,37 @@ export default function HRAccount() {
                 </Button>
               </div>
               <div className="grid grid-cols-1 gap-6">
-                {users.map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex justify-between items-center p-4 bg-white rounded-lg shadow"
-                  >
-                    <div>
-                      <Typography variant="h6">{user.name}</Typography>
-                      <Typography color="gray" className="text-sm">
-                        {user.position}
-                      </Typography>
+                {users
+                  .filter((user) => user.role !== "student")
+                  .map((user) => (
+                    <div
+                      key={user.id}
+                      className="flex justify-between items-center p-4 bg-white rounded-lg shadow"
+                    >
+                      <div>
+                        <Typography variant="h6">{user.name}</Typography>
+                        <Typography color="gray" className="text-sm">
+                          {user.position}
+                        </Typography>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          color="green"
+                          size="sm"
+                          onClick={() => handleEditClick(user)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          color="red"
+                          size="sm"
+                          onClick={() => handleDeleteUser(user.id, user.email)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        color="green"
-                        size="sm"
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        color="red"
-                        size="sm"
-                        onClick={() => handleDeleteUser(user.id, user.email)}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </Card>
           </div>

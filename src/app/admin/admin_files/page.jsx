@@ -183,16 +183,36 @@ export default function AdminFiles() {
   }, []);
 
   useEffect(() => {
-    const filtered = facultyFiles.filter((file) => {
-      const categoryMatch =
-        selectedCategory === "All" || file.category === selectedCategory;
-      const facultyMatch =
-        facultyFilter === "" ||
-        file.user_name.toLowerCase().includes(facultyFilter.toLowerCase());
-      const instituteMatch =
-        selectedInstitute === "All" || file.institute === selectedInstitute;
-      return categoryMatch && facultyMatch && instituteMatch;
-    });
+    // Define the status order
+    const statusOrder = { Pending: 1, Failed: 2, Verified: 3 };
+
+    const filtered = facultyFiles
+      .filter((file) => {
+        const categoryMatch =
+          selectedCategory === "All" || file.category === selectedCategory;
+        const facultyMatch =
+          facultyFilter === "" ||
+          file.user_name.toLowerCase().includes(facultyFilter.toLowerCase());
+        const instituteMatch =
+          selectedInstitute === "All" || file.institute === selectedInstitute;
+        return categoryMatch && facultyMatch && instituteMatch;
+      })
+      .sort((a, b) => {
+        // First, sort by status
+        const statusA = a.status || "Pending";
+        const statusB = b.status || "Pending";
+        const statusComparison = statusOrder[statusA] - statusOrder[statusB];
+
+        if (statusComparison !== 0) {
+          return statusComparison; // Lower number means higher priority
+        }
+
+        // If statuses are the same, sort by date (newest first)
+        const dateA = a.timestamp?.toDate() || new Date(0);
+        const dateB = b.timestamp?.toDate() || new Date(0);
+        return dateB - dateA; // Newest dates first
+      });
+
     setFilteredFiles(filtered);
   }, [facultyFiles, selectedCategory, facultyFilter, selectedInstitute]);
 
@@ -358,18 +378,6 @@ export default function AdminFiles() {
       console.error("Error deleting file:", error);
     }
   };
-
-  useEffect(() => {
-    const filtered = facultyFiles.filter((file) => {
-      const categoryMatch =
-        selectedCategory === "All" || file.category === selectedCategory;
-      const facultyMatch =
-        facultyFilter === "" ||
-        file.user_name.toLowerCase().includes(facultyFilter.toLowerCase());
-      return categoryMatch && facultyMatch;
-    });
-    setFilteredFiles(filtered);
-  }, [facultyFiles, selectedCategory, facultyFilter]);
 
   return isAuthorized ? (
     <>
