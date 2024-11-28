@@ -10,6 +10,10 @@ import {
   Textarea,
   IconButton,
   Avatar,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import { useEffect, useState, useRef } from "react";
 import {
@@ -183,6 +187,9 @@ export default function OVPA() {
   const [user, loading, error] = useAuthState(auth);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const router = useRouter();
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     if (loading) return;
@@ -213,6 +220,63 @@ export default function OVPA() {
   }, [user, loading, router]);
 
   useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
+  };
+
+  const handleMarkAsRead = async (fileId) => {
+    if (!user) return; // Early return if no user
+
+    try {
+      const fileRef = doc(db, "faculty_files", fileId);
+      const readByField = `readBy.${user.uid}`; // Create a dynamic field name
+
+      await updateDoc(fileRef, {
+        [readByField]: true,
+      });
+      toast.success("Marked as read");
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+      toast.error("Failed to mark as read");
+    }
+  };
+
+  useEffect(() => {
+    if (!user) return; // Early return if no user
+
     const fetchFiles = () => {
       const filesRef = collection(db, "faculty_files");
       const filesQuery = query(
@@ -221,10 +285,17 @@ export default function OVPA() {
         limit(10)
       );
       const unsubscribe = onSnapshot(filesQuery, (snapshot) => {
-        const filesData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const filesData = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            isRead: data.readBy?.[user.uid] || false,
+            user_name: data.user_name,
+            category: data.category,
+            timestamp: data.timestamp,
+            ...data,
+          };
+        });
         setFiles(filesData);
       });
       return unsubscribe;
@@ -258,7 +329,7 @@ export default function OVPA() {
       unsubscribeFiles();
       unsubscribeAnnouncements();
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -334,6 +405,7 @@ export default function OVPA() {
     }
   };
 
+  // Update the Notifications component to handle empty files array
   const Notifications = ({ files }) => (
     <Card className="p-4">
       <div className="flex justify-between items-center mb-4">
@@ -342,19 +414,36 @@ export default function OVPA() {
           <EyeIcon className="h-5 w-5" />
         </Link>
       </div>
-      {files.map((file) => (
-        <div key={file.id} className="mb-4 flex items-start">
-          <BellIcon className="h-5 w-5 mr-2 text-blue-500" />
-          <div>
-            <Typography variant="small" className="font-bold">
-              {file.user_name} uploaded a file under {file.category}
-            </Typography>
-            <Typography variant="small" color="gray">
-              {formatDate(file.timestamp.toDate())}
-            </Typography>
+      {files && files.length > 0 ? (
+        files.map((file) => (
+          <div
+            key={file.id}
+            className="mb-4 flex items-start cursor-pointer hover:bg-gray-50 p-2 rounded"
+            onClick={() => handleMarkAsRead(file.id)}
+          >
+            <BellIcon
+              className={`h-5 w-5 mr-2 ${
+                file.isRead ? "text-gray-400" : "text-blue-500"
+              }`}
+            />
+            <div>
+              <Typography
+                variant="small"
+                className={file.isRead ? "text-gray-500" : "font-bold"}
+              >
+                {file.user_name} uploaded a file under {file.category}
+              </Typography>
+              <Typography variant="small" color="gray">
+                {formatDate(file.timestamp.toDate())}
+              </Typography>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <Typography variant="small" color="gray">
+          No new notifications
+        </Typography>
+      )}
     </Card>
   );
 
@@ -394,6 +483,22 @@ export default function OVPA() {
           </div>
         </div>
       </div>
+      <Dialog
+        open={showTimeoutDialog}
+        handler={() => {}}
+        className="min-w-[350px]"
+      >
+        <DialogHeader>Session Timeout</DialogHeader>
+        <DialogBody>
+          Your session has expired due to inactivity. You will be redirected to
+          the login page.
+        </DialogBody>
+        <DialogFooter>
+          <Button onClick={handleTimeout} color="green">
+            Okay
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   ) : null;
 }

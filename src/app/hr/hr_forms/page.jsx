@@ -8,6 +8,10 @@ import {
   Option,
   Input,
   Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import { auth, db } from "@/app/firebase";
 import Header from "../header";
@@ -34,6 +38,9 @@ export default function HRForm() {
     threshold: 0.3,
     includeScore: true,
   };
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     if (!user) return;
@@ -92,6 +99,44 @@ export default function HRForm() {
     }
   }, [facultyName, selectedInstitute, allSurveys]);
 
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
+  };
+
   return isAuthorized ? (
     <>
       <div className="flex flex-col min-h-screen">
@@ -139,6 +184,22 @@ export default function HRForm() {
             </div>
           </div>
         </div>
+        <Dialog
+          open={showTimeoutDialog}
+          handler={() => {}}
+          className="min-w-[350px]"
+        >
+          <DialogHeader>Session Timeout</DialogHeader>
+          <DialogBody>
+            Your session has expired due to inactivity. You will be redirected
+            to the login page.
+          </DialogBody>
+          <DialogFooter>
+            <Button onClick={handleTimeout} color="green">
+              Okay
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
     </>
   ) : null;

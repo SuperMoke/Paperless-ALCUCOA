@@ -62,6 +62,18 @@ function SurveyComponent({ area }) {
     localStorage.setItem(`surveyData_2`, JSON.stringify(sender.data));
   });
 
+  survey.addNavigationItem({
+    id: "sv-nav-clear-page",
+    title: "Clear Form",
+    action: () => {
+      survey.currentPage.questions.forEach((question) => {
+        question.value = undefined;
+      });
+    },
+    css: "nav-button",
+    innerCss: "sd-btn nav-input",
+  });
+
   survey.onComplete.add((sender, options) => {
     const results = { ...sender.data };
     const meanValues = {};

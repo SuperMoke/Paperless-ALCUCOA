@@ -7,6 +7,11 @@ import {
   Select,
   Option,
   Button,
+  IconButton,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import { auth, db } from "@/app/firebase";
@@ -24,18 +29,30 @@ import { isAuthenticated } from "../../utils/auth";
 import Header from "../header";
 import Sidebar from "../sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
+import "react-toastify/dist/ReactToastify.css";
+
 import { toast, ToastContainer } from "react-toastify";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 // New CreateAccountModal component
 const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
   const [institute, setInstitute] = useState("");
   const [accountlevel, setAccountLevel] = useState("");
   const [name, setName] = useState("");
   const [idnumber, setIDnumber] = useState("");
   const [position, setPosition] = useState("");
   const [status, setStatus] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const validatePassword = (password) => {
+    const passwordRegex =
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +61,18 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
     const emailDomain = email.split("@")[1];
     if (emailDomain !== "cca.edu.ph") {
       toast.error("Email domain must be @cca.edu.ph");
+      return;
+    }
+
+    if (password !== confirmpassword) {
+      toast.error("Password do not match!");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password must contain at least 8 characters, including uppercase(A-Z), lowercase(a-z), numbers(0-9) and special characters(#?!@$%^&*-)"
+      );
       return;
     }
 
@@ -129,13 +158,59 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
             <Typography color="gray" className="font-normal mb-1">
               Password
             </Typography>
-            <Input
-              type="password"
-              label="Enter The Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative flex w-full max-w-[24rem]">
+              <Input
+                type={showPassword ? "text" : "password"}
+                label="Enter Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="pr-20"
+                containerProps={{
+                  className: "min-w-0",
+                }}
+              />
+              <IconButton
+                variant="text"
+                size="sm"
+                className="!absolute right-1 top-1 rounded"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeIcon className="h-5 w-5" />
+                ) : (
+                  <EyeSlashIcon className="h-5 w-5" />
+                )}
+              </IconButton>
+            </div>
+            <Typography color="gray" className="font-normal mb-1">
+              Confirm Password
+            </Typography>
+            <div className="relative flex w-full max-w-[24rem]">
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                label="Enter Your Password"
+                value={confirmpassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="pr-20"
+                containerProps={{
+                  className: "min-w-0",
+                }}
+              />
+              <IconButton
+                variant="text"
+                size="sm"
+                className="!absolute right-1 top-1 rounded"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeIcon className="h-5 w-5" />
+                ) : (
+                  <EyeSlashIcon className="h-5 w-5" />
+                )}
+              </IconButton>
+            </div>
           </div>
           <div>
             <Typography color="gray" className="font-normal mb-1">
@@ -188,16 +263,16 @@ const CreateAccountModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
 
           <div className="col-span-2 flex justify-end mt-4">
-            <Button onClick={onClose} color="red" className="mr-2">
-              Cancel
-            </Button>
-            <Button type="submit" color="green">
+            <Button type="submit" color="green" className="mr-2">
               Create
+            </Button>
+            <Button onClick={onClose} color="red">
+              Cancel
             </Button>
           </div>
         </form>
+        <ToastContainer />
       </Card>
-      <ToastContainer />
     </div>
   );
 };
@@ -210,6 +285,13 @@ export default function HRAccount() {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
+  const [userToReset, setUserToReset] = useState(null);
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     if (loading) return;
@@ -241,6 +323,44 @@ export default function HRAccount() {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
+  };
 
   const handleCreateAccount = async (userData) => {
     try {
@@ -276,26 +396,85 @@ export default function HRAccount() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm(`Are you sure you want to delete the account?`)) return;
+  const openResetDialog = (user) => {
+    setUserToReset(user);
+    setResetPasswordDialogOpen(true);
+  };
+
+  const handleResetPassword = async () => {
+    let defaultPassword;
+    switch (userToReset.role) {
+      case "admin":
+        defaultPassword = "admin123";
+        break;
+      case "faculty":
+        defaultPassword = "faculty123";
+        break;
+      case "ovpa":
+        defaultPassword = "ovpa123";
+        break;
+      case "hr":
+        defaultPassword = "hr12345";
+        break;
+      case "student":
+        defaultPassword = "student123";
+        break;
+      default:
+        defaultPassword = "default123";
+    }
+
+    try {
+      const response = await fetch("/api/resetPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: userToReset.id,
+          newPassword: defaultPassword,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success(
+          `Password reset successfully! New password: ${defaultPassword}`
+        );
+        setResetPasswordDialogOpen(false);
+        setUserToReset(null);
+      } else {
+        throw new Error("Failed to reset password");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("Error resetting password!");
+    }
+  };
+
+  const openDeleteDialog = (user) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteUser = async () => {
     try {
       const response = await fetch("/api/deleteUser", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ uid: userId }),
+        body: JSON.stringify({ uid: userToDelete.id }),
       });
       const data = await response.json();
       if (response.ok) {
-        console.log("User deleted successfully");
-        toast.success("User deleted successfully"); // Show success toast
+        toast.success("User deleted successfully");
+        setDeleteDialogOpen(false);
+        setUserToDelete(null);
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error deleting user:", error.message);
-      toast.error("Error deleting user. Please try again"); // Show error toast
+      toast.error("Error deleting user. Please try again");
     }
   };
 
@@ -351,12 +530,20 @@ export default function HRAccount() {
                         >
                           Edit
                         </Button>
+
                         <Button
                           color="red"
                           size="sm"
-                          onClick={() => handleDeleteUser(user.id, user.email)}
+                          onClick={() => openDeleteDialog(user)}
                         >
                           Delete
+                        </Button>
+                        <Button
+                          color="blue"
+                          size="sm"
+                          onClick={() => openResetDialog(user)}
+                        >
+                          Reset Password
                         </Button>
                       </div>
                     </div>
@@ -365,6 +552,70 @@ export default function HRAccount() {
             </Card>
           </div>
         </main>
+        <Dialog
+          open={resetPasswordDialogOpen}
+          handler={() => setResetPasswordDialogOpen(false)}
+        >
+          <DialogHeader>Confirm Password Reset</DialogHeader>
+          <DialogBody>
+            Are you sure you want to reset the password for {userToReset?.name}?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="gray"
+              onClick={() => setResetPasswordDialogOpen(false)}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="gradient"
+              color="blue"
+              onClick={handleResetPassword}
+            >
+              Reset Password
+            </Button>
+          </DialogFooter>
+        </Dialog>
+        <Dialog
+          open={deleteDialogOpen}
+          handler={() => setDeleteDialogOpen(false)}
+        >
+          <DialogHeader>Confirm Deletion</DialogHeader>
+          <DialogBody>
+            Are you sure you want to delete {userToDelete?.name}'s account?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="gray"
+              onClick={() => setDeleteDialogOpen(false)}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button variant="gradient" color="red" onClick={handleDeleteUser}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </Dialog>
+        <Dialog
+          open={showTimeoutDialog}
+          handler={() => {}}
+          className="min-w-[350px]"
+        >
+          <DialogHeader>Session Timeout</DialogHeader>
+          <DialogBody>
+            Your session has expired due to inactivity. You will be redirected
+            to the login page.
+          </DialogBody>
+          <DialogFooter>
+            <Button onClick={handleTimeout} color="green">
+              Okay
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
       {isModalOpen && <Modal user={selectedUser} onClose={handleModalClose} />}
       <CreateAccountModal
@@ -372,6 +623,7 @@ export default function HRAccount() {
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={handleCreateAccount}
       />
+
       <ToastContainer />
     </div>
   ) : null;

@@ -57,6 +57,11 @@ export default function HumanResource() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const router = useRouter();
   const [user, loading] = useAuthState(auth);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     if (loading) return;
@@ -187,25 +192,63 @@ export default function HumanResource() {
     );
   };
 
-  const handleDeleteFile = async (file) => {
-    if (!window.confirm(`Are you sure you want to delete ${file.name}?`))
-      return;
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
+  };
+
+  const openDeleteDialog = (file) => {
+    setFileToDelete(file);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteFile = async () => {
     try {
       const fileRef = ref(
         storage,
-        decodeURIComponent(file.url.split("/o/")[1].split("?")[0])
+        decodeURIComponent(fileToDelete.url.split("/o/")[1].split("?")[0])
       );
       await deleteObject(fileRef);
-      console.log("File deleted successfully from storage");
-
-      // Delete the file metadata from the hr_files collection
-      await deleteDoc(doc(db, "hr_files", file.id));
-      console.log("File metadata deleted successfully from Firestore");
-
+      await deleteDoc(doc(db, "hr_files", fileToDelete.id));
       toast.success("File deleted successfully");
+      setDeleteDialogOpen(false);
+      setFileToDelete(null);
     } catch (error) {
       console.error("Error deleting file:", error);
-      toast.error("Error deleting file");
+      toast.error("Failed to delete file");
     }
   };
 
@@ -262,7 +305,7 @@ export default function HumanResource() {
                             />
                             <TrashIcon
                               className="h-5 w-5 text-red-500 cursor-pointer"
-                              onClick={() => handleDeleteFile(file)}
+                              onClick={() => openDeleteDialog(file)}
                             />
                           </div>
                         </div>
@@ -275,6 +318,45 @@ export default function HumanResource() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={showTimeoutDialog}
+        handler={() => {}}
+        className="min-w-[350px]"
+      >
+        <DialogHeader>Session Timeout</DialogHeader>
+        <DialogBody>
+          Your session has expired due to inactivity. You will be redirected to
+          the login page.
+        </DialogBody>
+        <DialogFooter>
+          <Button onClick={handleTimeout} color="green">
+            Okay
+          </Button>
+        </DialogFooter>
+      </Dialog>
+      <Dialog
+        open={deleteDialogOpen}
+        handler={() => setDeleteDialogOpen(false)}
+      >
+        <DialogHeader>Confirm Deletion</DialogHeader>
+        <DialogBody>
+          Are you sure you want to delete {fileToDelete?.name}?
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="gray"
+            onClick={() => setDeleteDialogOpen(false)}
+            className="mr-1"
+          >
+            Cancel
+          </Button>
+          <Button variant="gradient" color="red" onClick={handleDeleteFile}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </Dialog>
       <ToastContainer />
     </>
   ) : null;

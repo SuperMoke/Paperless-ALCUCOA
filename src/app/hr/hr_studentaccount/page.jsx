@@ -6,6 +6,10 @@ import {
   Select,
   Option,
   Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import React, { useState, useEffect } from "react";
 import { auth, db } from "@/app/firebase";
@@ -23,6 +27,7 @@ import { isAuthenticated } from "../../utils/auth";
 import Header from "../header";
 import Sidebar from "../sidebar";
 import { useAuthState } from "react-firebase-hooks/auth";
+import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
 // New CreateAccountModal component
@@ -212,6 +217,13 @@ export default function HRAccount() {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
+  const [userToReset, setUserToReset] = useState(null);
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     if (loading) return;
@@ -275,26 +287,62 @@ export default function HRAccount() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm(`Are you sure you want to delete the account?`)) return;
+  const openDeleteDialog = (user) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteUser = async () => {
     try {
       const response = await fetch("/api/deleteUser", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ uid: userId }),
+        body: JSON.stringify({ uid: userToDelete.id }),
       });
       const data = await response.json();
       if (response.ok) {
-        console.log("User deleted successfully");
-        toast.success("Account deleted successfully");
+        toast.success("User deleted successfully");
+        setDeleteDialogOpen(false);
+        setUserToDelete(null);
       } else {
         throw new Error(data.error);
       }
     } catch (error) {
       console.error("Error deleting user:", error.message);
-      toast.success("Error creating account. Please try again");
+      toast.error("Error deleting user. Please try again");
+    }
+  };
+
+  const openResetDialog = (user) => {
+    setUserToReset(user);
+    setResetPasswordDialogOpen(true);
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      const response = await fetch("/api/resetPassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: userToReset.id,
+          newPassword: "student123",
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Password reset successfully! New password: student123");
+        setResetPasswordDialogOpen(false);
+        setUserToReset(null);
+      } else {
+        throw new Error("Failed to reset password");
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("Error resetting password!");
     }
   };
 
@@ -306,6 +354,43 @@ export default function HRAccount() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
+  };
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
   };
 
   return isAuthorized ? (
@@ -354,9 +439,16 @@ export default function HRAccount() {
                       <Button
                         color="red"
                         size="sm"
-                        onClick={() => handleDeleteUser(user.id, user.email)}
+                        onClick={() => openDeleteDialog(user)}
                       >
                         Delete
+                      </Button>
+                      <Button
+                        color="blue"
+                        size="sm"
+                        onClick={() => openResetDialog(user)}
+                      >
+                        Reset Password
                       </Button>
                     </div>
                   </div>
@@ -365,6 +457,72 @@ export default function HRAccount() {
             </Card>
           </div>
         </main>
+        <Dialog
+          open={showTimeoutDialog}
+          handler={() => {}}
+          className="min-w-[350px]"
+        >
+          <DialogHeader>Session Timeout</DialogHeader>
+          <DialogBody>
+            Your session has expired due to inactivity. You will be redirected
+            to the login page.
+          </DialogBody>
+          <DialogFooter>
+            <Button onClick={handleTimeout} color="green">
+              Okay
+            </Button>
+          </DialogFooter>
+        </Dialog>
+
+        <Dialog
+          open={resetPasswordDialogOpen}
+          handler={() => setResetPasswordDialogOpen(false)}
+        >
+          <DialogHeader>Confirm Password Reset</DialogHeader>
+          <DialogBody>
+            Are you sure you want to reset the password for {userToReset?.name}?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="gray"
+              onClick={() => setResetPasswordDialogOpen(false)}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="gradient"
+              color="blue"
+              onClick={handleResetPassword}
+            >
+              Reset Password
+            </Button>
+          </DialogFooter>
+        </Dialog>
+
+        <Dialog
+          open={deleteDialogOpen}
+          handler={() => setDeleteDialogOpen(false)}
+        >
+          <DialogHeader>Confirm Deletion</DialogHeader>
+          <DialogBody>
+            Are you sure you want to delete {userToDelete?.name}'s account?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="gray"
+              onClick={() => setDeleteDialogOpen(false)}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button variant="gradient" color="red" onClick={handleDeleteUser}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
       {isModalOpen && <Modal user={selectedUser} onClose={handleModalClose} />}
       <CreateAccountModal

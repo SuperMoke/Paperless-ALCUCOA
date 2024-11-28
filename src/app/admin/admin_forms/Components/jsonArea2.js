@@ -163,10 +163,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -194,10 +190,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -232,10 +224,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -264,10 +252,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -295,10 +279,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -405,10 +385,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -436,10 +412,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -469,10 +441,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -501,10 +469,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -531,10 +495,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -568,10 +528,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -598,10 +554,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -630,10 +582,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -660,10 +608,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -709,10 +653,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -740,10 +680,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -862,10 +798,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -898,10 +830,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -928,10 +856,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -960,10 +884,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -990,10 +910,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -1039,10 +955,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -1070,10 +982,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -1171,7 +1079,7 @@ export const jsonArea2 = {
           name: "question51",
           title:
             "5. Faculty with concurrent or special designations are given \r\nthe following rewards and incentives:\n\r\na. Equivalent teaching units\r\nb. Service credits\r\nc. Honorarium\r\nd. Points for promotion, Ranking or recognitions",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -1202,10 +1110,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -1251,10 +1155,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -1282,10 +1182,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -1352,10 +1248,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -1411,10 +1303,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -1459,10 +1347,6 @@ export const jsonArea2 = {
               value: "1",
               text: "1",
             },
-            {
-              value: "0",
-              text: "0",
-            },
           ],
         },
         {
@@ -1490,10 +1374,6 @@ export const jsonArea2 = {
             {
               value: "1",
               text: "1",
-            },
-            {
-              value: "0",
-              text: "0",
             },
           ],
         },
@@ -1535,7 +1415,7 @@ export const jsonArea2 = {
           name: "question69",
           title:
             "The institution regularly conducts performance evaluation \r\nof faculty members using standardized instrument duly \r\nunderstood by the faculty that includes teaching \r\ncompetencies, research and community involvement\r\n",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -1897,13 +1777,13 @@ export const jsonArea2 = {
           type: "radiogroup",
           name: "question85",
           title: "There are formal study opportunities for faculty member\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question86",
           title: "4. There is membership in professional organizations\r\n",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
@@ -1938,7 +1818,7 @@ export const jsonArea2 = {
           name: "question88",
           title:
             "6. There are opportunities available to the full-time faculty in \r\nthe graduate and post graduate programs as follows: \n\r\n6.1 scholarships/ grants and fellowship\r\n6.2 research\r\n6.3 seminars and training",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
@@ -1978,21 +1858,21 @@ export const jsonArea2 = {
           name: "question91",
           title:
             "1. The institution proposes a budget for Faculty Development \r\nProgram",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question92",
           title:
             "2. The institution solicits the approval of the Faculty \r\nDevelopment Program\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question93",
           title:
             "3. The institution monitors the faculty meeting and attendance \r\nof faculty in meetings, seminars and other training \r\nprogram.\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -2031,13 +1911,13 @@ export const jsonArea2 = {
           type: "radiogroup",
           name: "question96",
           title: "2. Meetings regularly held\r\n",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question97",
           title: "3. In service training regularly conducted",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
@@ -2198,7 +2078,7 @@ export const jsonArea2 = {
           name: "question105",
           title:
             "4. There is relationship with other sectors as evidenced in the \r\nfollowing:\n\r\na. Faculty members have healthy relationships with the \r\nnon-academic personnel. \r\nb. Faculty members actively participate in school projects \r\nand services.\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -2210,14 +2090,14 @@ export const jsonArea2 = {
           name: "question107",
           title:
             "1. The institution supports Faculty Association programs and \r\nactivities",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question108",
           title:
             "2. The institution provides opportunities for faculty to have \r\nharmonious relationship with the administration, students \r\nand other stakeholders.",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -2228,14 +2108,14 @@ export const jsonArea2 = {
           type: "radiogroup",
           name: "question110",
           title: "1. Faculty Association activities and programs are conducted",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question111",
           title:
             "2. Faculty activities and program with the administration/ \r\nstudents/ other stakeholders are conducted.\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "comment",
@@ -2398,26 +2278,26 @@ export const jsonArea2 = {
           name: "question119",
           title:
             "1. The institution set up a system for leave administration \r\nlike ledger and leave form",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question120",
           title: "2. The institution audits leave credit.\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question121",
           title:
             "3. The institution facilitates mandatory and fringe benefits \r\nwithin the prescribed period.",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question122",
           title: "4. The institution facilitates the payroll on time.\r",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "expression",
@@ -2429,20 +2309,20 @@ export const jsonArea2 = {
           name: "question124",
           title:
             "1. Facilitated payroll, mandatory benefit and different fringe \r\nbenefit on time",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question125",
           title:
             "2. System of leave administration is formulated and \r\nimplemented.",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "radiogroup",
           name: "question126",
           title: "3. Conducted regular audit of leave credits.",
-          choices: ["5", "4", "3", "2", "1", "0"],
+          choices: ["5", "4", "3", "2", "1"],
         },
         {
           type: "comment",

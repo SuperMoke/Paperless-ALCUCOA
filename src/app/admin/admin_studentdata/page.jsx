@@ -1,6 +1,16 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Typography, Card, CardBody, Input } from "@material-tailwind/react";
+import {
+  Typography,
+  Card,
+  CardBody,
+  Input,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button,
+} from "@material-tailwind/react";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import Header from "../header";
@@ -18,6 +28,10 @@ export default function AdminStudentData() {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   useEffect(() => {
     const q = query(collection(db, "studentsurveys"));
@@ -127,6 +141,44 @@ export default function AdminStudentData() {
     },
   };
 
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -141,6 +193,51 @@ export default function AdminStudentData() {
                 onChange={handleDateChange}
                 className=""
               />
+            </div>
+          </div>
+          <div className="w-full overflow-x-scroll shadow-md rounded-lg">
+            <div className="min-w-[1000px]">
+              <table className="w-full table-auto text-left">
+                <thead>
+                  <tr>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4 min-w-[400px]">
+                      Question
+                    </th>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4">
+                      1
+                    </th>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4">
+                      2
+                    </th>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4">
+                      3
+                    </th>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4">
+                      4
+                    </th>
+                    <th className="border-b border-gray-200 bg-gray-50 p-4">
+                      5
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(chartData).map(([questionName, data]) => (
+                    <tr key={questionName}>
+                      <td className="p-4 border-b border-gray-200">
+                        {data.title}
+                      </td>
+                      {data.chartData.datasets[0].data.map((count, index) => (
+                        <td
+                          key={index}
+                          className="p-4 border-b border-gray-200"
+                        >
+                          {count}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
           {Object.entries(chartData).length === 0 ? (
@@ -166,6 +263,22 @@ export default function AdminStudentData() {
             ))
           )}
         </div>
+        <Dialog
+          open={showTimeoutDialog}
+          handler={() => {}}
+          className="min-w-[350px]"
+        >
+          <DialogHeader>Session Timeout</DialogHeader>
+          <DialogBody>
+            Your session has expired due to inactivity. You will be redirected
+            to the login page.
+          </DialogBody>
+          <DialogFooter>
+            <Button onClick={handleTimeout} color="green">
+              Okay
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
       <ToastContainer />
     </div>

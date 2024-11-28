@@ -1,6 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  IconButton,
+} from "@material-tailwind/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -14,19 +20,27 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth } from "./firebase";
+import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     const auth = getAuth();
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      if (checkGenericPassword(password)) {
+        toast.warning("For security reasons, you must change your password.");
+        router.push("/changepassword");
+        return;
+      }
       const db = getFirestore();
       const userQuery = query(
         collection(db, "userdata"),
@@ -61,6 +75,18 @@ export default function Login() {
     }
   };
 
+  const checkGenericPassword = (password) => {
+    const genericPatterns = [
+      "student123",
+      "admin123",
+      "faculty123",
+      "ovpa123",
+      "hr12345",
+      "default123",
+    ];
+    return genericPatterns.includes(password.toLowerCase());
+  };
+
   return (
     <div className="min-h-screen bg-[#8d9e84] flex items-center justify-center">
       <div className="w-full max-w-md">
@@ -91,13 +117,32 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Input
-                type="password"
-                size="lg"
-                label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+
+              <div className="relative flex w-full max-w-[24rem]">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  label="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="pr-20"
+                  containerProps={{
+                    className: "min-w-0",
+                  }}
+                />
+                <IconButton
+                  variant="text"
+                  size="sm"
+                  className="!absolute right-1 top-1 rounded"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="h-5 w-5" />
+                  ) : (
+                    <EyeIcon className="h-5 w-5" />
+                  )}
+                </IconButton>
+              </div>
             </div>
             <Button
               type="submit"

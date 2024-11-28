@@ -8,6 +8,9 @@ import {
   Option,
   Button,
   Input,
+  Dialog,
+  DialogHeader,
+  DialogBody,
 } from "@material-tailwind/react";
 import {
   collection,
@@ -198,6 +201,22 @@ export default function AdminStudentForms() {
             </CardBody>
           </Card>
         </div>
+        <Dialog
+          open={showTimeoutDialog}
+          handler={() => {}}
+          className="min-w-[350px]"
+        >
+          <DialogHeader>Session Timeout</DialogHeader>
+          <DialogBody>
+            Your session has expired due to inactivity. You will be redirected
+            to the login page.
+          </DialogBody>
+          <DialogFooter>
+            <Button onClick={handleTimeout} color="green">
+              Okay
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
       <ToastContainer />
     </div>
