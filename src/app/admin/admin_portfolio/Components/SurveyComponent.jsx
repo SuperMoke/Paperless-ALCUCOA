@@ -15,42 +15,47 @@ import {
 } from "firebase/firestore";
 import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
+import { Document, Packer } from "docx";
+import { createPersonalPortfolio } from "./portfolioDocxGenerator";
 
 const survey = new Model(json);
 
-// Function to save the survey data as a PDF
-const savePdf = async (data) => {
-  const surveyPDF = new SurveyPDF(json);
-  surveyPDF.mode = "display";
-  surveyPDF.data = data;
-  const pdfOptions = {
-    fontSize: 12,
-    margins: {
-      left: 10,
-      right: 10,
-      top: 10,
-      bot: 10,
-    },
-    format: [210, 297],
-  };
-  surveyPDF.save("portfolio.pdf", pdfOptions);
+// Add these lines right after const survey = new Model(json);
+
+const saveAsDocx = async (data) => {
+  try {
+    const doc = createPersonalPortfolio(data);
+    const blob = await Packer.toBlob(doc);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `Faculty_Portfolio_${data.surname || "Unknown"}.docx`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    alert("Document generated successfully!");
+  } catch (error) {
+    console.error("Error generating document:", error);
+    alert("Error generating document. Please try again.");
+  }
 };
 
-// Add a custom navigation item to the survey
 survey.addNavigationItem({
-  id: "survey_save_as_file",
-  title: "Save as PDF",
-  visibleIndex: 51,
+  id: "survey_save_as_docx",
+  title: "Save as DOCX",
+  visibleIndex: 52,
   action: () => {
-    savePdf(survey.data);
+    saveAsDocx(survey.data);
   },
 });
 
 function SurveyComponent({ uid, email, surveyData }) {
   const [isSaved, setIsSaved] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    if (surveyData) {
+    if (!surveyData) {
       survey.data = surveyData;
     } else {
       const savedData = localStorage.getItem("surveyData");
@@ -91,7 +96,6 @@ function SurveyComponent({ uid, email, surveyData }) {
     } catch (error) {
       console.error("Error saving survey data: ", error);
     }
-    localStorage.removeItem("surveyData");
   });
 
   survey.applyTheme(FlatLight);

@@ -1,4 +1,5 @@
 export const json = {
+  questionsOnPageMode: "singlePage",
   title: "PERSONAL PORTFOLIO FOR FACULTY",
   description:
     "Accomplish this personal portfolio for faculty by providing the details of your performance and engagements as a faculty member of the College for the past three academic years in the following areas below. Please provide the required information and supporting documents for each item you indicate.  ",
@@ -62,11 +63,11 @@ export const json = {
           title: "Sex",
           choices: [
             {
-              value: "Item 1",
+              value: "Male",
               text: "Male",
             },
             {
-              value: "Item 2",
+              value: "Female",
               text: "Female",
             },
           ],
@@ -77,19 +78,19 @@ export const json = {
           title: "Civil Status",
           choices: [
             {
-              value: "Item 1",
+              value: "Single",
               text: "Single",
             },
             {
-              value: "Item 2",
+              value: "Married",
               text: "Married",
             },
             {
-              value: "Item 3",
+              value: "Widowed",
               text: "Widowed",
             },
             {
-              value: "Item 4",
+              value: "Separated",
               text: "Separated",
             },
           ],
@@ -228,11 +229,11 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "Yes",
                   text: "Yes",
                 },
                 {
-                  value: 2,
+                  value: "No",
                   text: "No",
                 },
               ],
@@ -320,11 +321,11 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "Published",
                   text: "Published",
                 },
                 {
-                  value: 2,
+                  value: "Unpublished",
                   text: "Unpublished",
                 },
               ],
@@ -359,27 +360,27 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "In-House",
                   text: "In-House",
                 },
                 {
-                  value: 2,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 3,
+                  value: "Provincial",
                   text: "Provincial",
                 },
                 {
-                  value: 4,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 5,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 6,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -421,27 +422,27 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "In-House",
                   text: "In-House",
                 },
                 {
-                  value: 2,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 3,
+                  value: "Provincial",
                   text: "Provincial",
                 },
                 {
-                  value: 4,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 5,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 6,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -483,23 +484,23 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "In-House",
                   text: "In-House",
                 },
                 {
-                  value: 2,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 3,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 4,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 5,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -541,23 +542,23 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "In-House",
                   text: "In-House",
                 },
                 {
-                  value: 2,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 3,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 4,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 5,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -663,19 +664,19 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 2,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 3,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 4,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -713,23 +714,23 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 5,
+                  value: "In-House",
                   text: "In-House",
                 },
                 {
-                  value: 1,
+                  value: "City-Wide",
                   text: "City-Wide",
                 },
                 {
-                  value: 2,
+                  value: "Regional",
                   text: "Regional",
                 },
                 {
-                  value: 3,
+                  value: "National",
                   text: "National",
                 },
                 {
-                  value: 4,
+                  value: "International",
                   text: "International",
                 },
               ],
@@ -780,11 +781,11 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "College-Mandated",
                   text: "College-Mandated",
                 },
                 {
-                  value: 2,
+                  value: "Institute-Mandated",
                   text: "Institute-Mandated",
                 },
               ],
@@ -857,15 +858,15 @@ export const json = {
               cellType: "dropdown",
               choices: [
                 {
-                  value: 1,
+                  value: "Program-Based",
                   text: "Program-Based",
                 },
                 {
-                  value: 2,
+                  value: "Institute-Based",
                   text: "Institute-Based",
                 },
                 {
-                  value: 3,
+                  value: "College-Based",
                   text: "College-Based",
                 },
               ],
