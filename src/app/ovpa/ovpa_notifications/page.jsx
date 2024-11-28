@@ -57,7 +57,7 @@ export default function OVPANotifications() {
     checkAuth();
   }, [user, loading, router]);
 
-  seEffect(() => {
+  useEffect(() => {
     const resetTimer = () => setLastActivity(Date.now());
     const events = [
       "mousedown",

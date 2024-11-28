@@ -34,6 +34,9 @@ export default function AdminStudentForms() {
   const [nameFilter, setNameFilter] = useState("");
   const [selectedInstitute, setSelectedInstitute] = useState("All");
   const [selectedProgram, setSelectedProgram] = useState("All");
+  const [lastActivity, setLastActivity] = useState(Date.now());
+  const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
+  const TIMEOUT_DURATION = 600000;
 
   const institutes = ["All", "ICSLIS", "IEAS", "IBM"];
   const programsByInstitute = {
@@ -105,6 +108,44 @@ export default function AdminStudentForms() {
       console.error("Error sending surveys to all students:", error);
       toast.error("Failed to send surveys to all students. Please try again.");
     }
+  };
+
+  useEffect(() => {
+    const resetTimer = () => setLastActivity(Date.now());
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+
+    // Add event listeners
+    events.forEach((event) => {
+      document.addEventListener(event, resetTimer);
+    });
+
+    // Check for inactivity
+    const interval = setInterval(() => {
+      const now = Date.now();
+      if (now - lastActivity >= TIMEOUT_DURATION) {
+        setShowTimeoutDialog(true);
+      }
+    }, 60000); // Check every minute
+
+    return () => {
+      // Cleanup
+      events.forEach((event) => {
+        document.removeEventListener(event, resetTimer);
+      });
+      clearInterval(interval);
+    };
+  }, [lastActivity]);
+
+  const handleTimeout = () => {
+    auth.signOut();
+    setShowTimeoutDialog(false);
+    router.push("/");
   };
 
   return (
