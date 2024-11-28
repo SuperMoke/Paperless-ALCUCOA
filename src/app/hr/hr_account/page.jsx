@@ -584,7 +584,7 @@ export default function HRAccount() {
         >
           <DialogHeader>Confirm Deletion</DialogHeader>
           <DialogBody>
-            Are you sure you want to delete {userToDelete?.name}'s account?
+            Are you sure you want to delete {userToDelete?.name} account?
           </DialogBody>
           <DialogFooter>
             <Button

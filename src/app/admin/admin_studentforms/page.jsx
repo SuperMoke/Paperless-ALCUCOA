@@ -11,6 +11,7 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import {
   collection,
