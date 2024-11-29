@@ -25,7 +25,7 @@ export const json = {
           type: "radiogroup",
           name: "question1",
           title:
-            "1. The institution has copies of OBE curriculum available to \r\nthe following:\n\r\na. Students;\r\nb. Year Level Adviser or its equivalent;\r\nc. Registrar’s Office; and\r\nd. Department Head/Dean/Vice President for Academic \r\n Affairs Office.\rquestion1",
+            "1. The institution has copies of OBE curriculum available to \r\nthe following:\n\r\na. Students;\r\nb. Year Level Adviser or its equivalent;\r\nc. Registrar’s Office; and\r\nd. Department Head/Dean/Vice President for Academic \r\n Affairs Office.",
           choices: [
             {
               value: "5",

@@ -461,8 +461,13 @@ export default function UserHomepage() {
         </div>
         <Dialog
           open={showTimeoutDialog}
-          handler={() => {}}
+          handler={() => setShowTimeoutDialog(false)} // Add proper handler
           className="min-w-[350px]"
+          dismiss={{
+            enabled: true,
+            escapeKey: true,
+            outsidePress: true,
+          }}
         >
           <DialogHeader>Session Timeout</DialogHeader>
           <DialogBody>
