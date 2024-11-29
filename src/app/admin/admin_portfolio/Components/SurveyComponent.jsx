@@ -17,6 +17,7 @@ import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
 import { Document, Packer } from "docx";
 import { createPersonalPortfolio } from "./portfolioDocxGenerator";
+import { generateDocument } from "./documentGenerator";
 
 const survey = new Model(json);
 
@@ -24,16 +25,7 @@ const survey = new Model(json);
 
 const saveAsDocx = async (data) => {
   try {
-    const doc = createPersonalPortfolio(data);
-    const blob = await Packer.toBlob(doc);
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `Faculty_Portfolio_${data.surname || "Unknown"}.docx`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    await generateDocument(data);
     alert("Document generated successfully!");
   } catch (error) {
     console.error("Error generating document:", error);

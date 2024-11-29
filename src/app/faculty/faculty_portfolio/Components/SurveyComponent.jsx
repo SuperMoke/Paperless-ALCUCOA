@@ -15,41 +15,39 @@ import {
 } from "firebase/firestore";
 import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
+import { Document, Packer } from "docx";
+import { createPersonalPortfolio } from "./portfolioDocxGenerator";
+import { generateDocument } from "./documentGenerator";
 
 const survey = new Model(json);
 
-const savePdf = async (data) => {
-  const surveyPDF = new SurveyPDF(json);
-  surveyPDF.mode = "display";
-  surveyPDF.data = data;
-  const pdfOptions = {
-    fontSize: 12,
-    margins: {
-      left: 10,
-      right: 10,
-      top: 10,
-      bot: 10,
-    },
-    format: [210, 297],
-  };
-  surveyPDF.save("portfolio.pdf", pdfOptions);
+// Add these lines right after const survey = new Model(json);
+
+const saveAsDocx = async (data) => {
+  try {
+    await generateDocument(data);
+    alert("Document generated successfully!");
+  } catch (error) {
+    console.error("Error generating document:", error);
+    alert("Error generating document. Please try again.");
+  }
 };
 
-// Navigation item placed outside component
 survey.addNavigationItem({
-  id: "survey_save_as_file",
-  title: "Save as PDF",
-  visibleIndex: 51,
+  id: "survey_save_as_docx",
+  title: "Save as DOCX",
+  visibleIndex: 52,
   action: () => {
-    savePdf(survey.data);
+    saveAsDocx(survey.data);
   },
 });
 
 function SurveyComponent({ uid, email, surveyData }) {
   const [isSaved, setIsSaved] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
-    if (surveyData) {
+    if (!surveyData) {
       survey.data = surveyData;
     } else {
       const savedData = localStorage.getItem("surveyData");
@@ -60,7 +58,7 @@ function SurveyComponent({ uid, email, surveyData }) {
     survey.onValueChanged.add((sender, options) => {
       localStorage.setItem("surveyData", JSON.stringify(sender.data));
     });
-  }, [survey, surveyData]);
+  }, [surveyData]);
 
   survey.onComplete.add(async (sender, options) => {
     console.log(JSON.stringify(sender.data, null, 3));
@@ -74,6 +72,7 @@ function SurveyComponent({ uid, email, surveyData }) {
         institute = doc.data().institute;
         name = doc.data().name;
       });
+
       const surveyDocRef = doc(db, "surveys", uid);
       await setDoc(surveyDocRef, {
         uid: uid,
@@ -83,22 +82,17 @@ function SurveyComponent({ uid, email, surveyData }) {
         surveyData: sender.data,
         timestamp: new Date(),
       });
+
       setIsSaved(true);
       window.location.reload();
     } catch (error) {
       console.error("Error saving survey data: ", error);
     }
-
-    localStorage.removeItem("surveyData");
   });
 
   survey.applyTheme(FlatLight);
 
-  return (
-    <div>
-      <Survey model={survey} />
-    </div>
-  );
+  return <Survey model={survey} />;
 }
 
 export default SurveyComponent;

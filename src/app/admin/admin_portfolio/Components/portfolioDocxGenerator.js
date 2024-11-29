@@ -108,6 +108,10 @@ export const createPersonalPortfolio = (surveyData) => {
             alignment: AlignmentType.CENTER,
           }),
           new Paragraph({
+            spacing: {
+              before: 200,
+              after: 200,
+            },
             children: [
               new TextRun({
                 text: "as of ",
@@ -136,23 +140,51 @@ export const createPersonalPortfolio = (surveyData) => {
 
           // Personal Information Section
           new Paragraph({
+            spacing: {
+              before: 400,
+            },
             children: [
               new TextRun({
                 text: "PERSONAL INFORMATION",
                 bold: true,
+                size: 24,
               }),
             ],
+            border: {
+              top: { style: BorderStyle.SINGLE, size: 1 },
+              bottom: { style: BorderStyle.SINGLE, size: 1 },
+              left: { style: BorderStyle.SINGLE, size: 1 },
+              right: { style: BorderStyle.SINGLE, size: 1 },
+            },
+            padding: {
+              left: 100,
+              right: 100,
+            },
+          }),
+
+          new Paragraph({
             spacing: {
-              before: 400,
+              before: 200,
               after: 200,
             },
+            children: [
+              new TextRun(
+                "Identify pertinent information below. Write N/A for items not applicable to you."
+              ),
+            ],
           }),
 
           // Personal Information Table
           new Table({
             width: {
               size: 100,
-              type: WidthType.PERCENTAGE,
+              type: docx.WidthType.PERCENTAGE,
+            },
+            borders: {
+              all: {
+                style: BorderStyle.SINGLE,
+                size: 1,
+              },
             },
             rows: [
               new TableRow({
@@ -165,7 +197,7 @@ export const createPersonalPortfolio = (surveyData) => {
                     ],
                     width: {
                       size: 33,
-                      type: WidthType.PERCENTAGE,
+                      type: docx.WidthType.PERCENTAGE,
                     },
                   }),
                   new TableCell({
@@ -176,7 +208,7 @@ export const createPersonalPortfolio = (surveyData) => {
                     ],
                     width: {
                       size: 33,
-                      type: WidthType.PERCENTAGE,
+                      type: docx.WidthType.PERCENTAGE,
                     },
                   }),
                   new TableCell({
@@ -187,7 +219,7 @@ export const createPersonalPortfolio = (surveyData) => {
                     ],
                     width: {
                       size: 34,
-                      type: WidthType.PERCENTAGE,
+                      type: docx.WidthType.PERCENTAGE,
                     },
                   }),
                 ],
@@ -328,10 +360,6 @@ export const createPersonalPortfolio = (surveyData) => {
                 bold: true,
               }),
             ],
-            spacing: {
-              before: 200,
-              after: 200,
-            },
           }),
 
           new Paragraph({
@@ -341,6 +369,9 @@ export const createPersonalPortfolio = (surveyData) => {
                 italics: true,
               }),
             ],
+            spacing: {
+              after: 200,
+            },
           }),
 
           // Professional License Table
@@ -418,6 +449,17 @@ export const createPersonalPortfolio = (surveyData) => {
 
           // Degrees Obtained Table
           createSubsectionHeader("2. Degrees Obtained"),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "Identify pertinent information below. List down the degrees obtained. (Begin with the most recent)  ",
+                italics: true,
+              }),
+            ],
+            spacing: {
+              after: 200,
+            },
+          }),
           new Table({
             ...DEFAULT_TABLE_STYLE,
             rows: [
@@ -478,7 +520,19 @@ export const createPersonalPortfolio = (surveyData) => {
             ],
           }),
 
-          createSubsectionHeader("2. Degrees Obtained"),
+          createSubsectionHeader("3. Degrees Obtained"),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "List down the degree/s being pursued, if any. (Begin with the most recent).",
+                italics: true,
+              }),
+            ],
+            spacing: {
+              before: 400,
+              after: 200,
+            },
+          }),
           new Table({
             ...DEFAULT_TABLE_STYLE,
             rows: [
@@ -615,6 +669,18 @@ export const createPersonalPortfolio = (surveyData) => {
 
           // Innovation and Creative Works Section
           createSectionHeader("C. INNOVATION AND CREATIVE WORKS"),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "Describe the innovation that you introduced in your class during the last three academic years.  Please describe in the third column the results/effects/impacts of the innovation in the quality of teaching-learning process. Also indicate whether the innovation is adopted by your program, your Institute or by the College. Include also the patents or copyrights you have obtained during the year and describe briefly their value to your program, your Institute or in the College.  Please indicate if such were used elsewhere outside the College. (Begin with the most recent) ",
+                italics: true,
+              }),
+            ],
+            spacing: {
+              before: 400,
+              after: 200,
+            },
+          }),
           new Table({
             ...DEFAULT_TABLE_STYLE,
             rows: [

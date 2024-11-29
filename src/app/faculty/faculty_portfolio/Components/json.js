@@ -1,4 +1,5 @@
 export const json = {
+  questionsOnPageMode: "singlePage",
   title: "PERSONAL PORTFOLIO FOR FACULTY",
   description:
     "Accomplish this personal portfolio for faculty by providing the details of your performance and engagements as a faculty member of the College for the past three academic years in the following areas below. Please provide the required information and supporting documents for each item you indicate.  ",
