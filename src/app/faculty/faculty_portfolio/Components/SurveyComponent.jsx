@@ -16,7 +16,6 @@ import {
 import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
 import { Document, Packer } from "docx";
-import { createPersonalPortfolio } from "./portfolioDocxGenerator";
 import { generateDocument } from "./documentGenerator";
 
 const survey = new Model(json);
