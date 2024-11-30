@@ -6,7 +6,17 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-} from "@material-tailwind/react/components/Button";
+} from "@material-tailwind/react";
+import {
+  Card,
+  CardBody,
+  Input,
+  Progress,
+  Typography,
+  Select,
+  Option,
+} from "@material-tailwind/react";
+
 import { db, storage, auth } from "@/app/firebase";
 import {
   uploadBytesResumable,
@@ -29,12 +39,9 @@ import {
   limit,
   getFirestore,
 } from "firebase/firestore";
-import { Progress, Typography } from "@material-tailwind/react";
-import Card from "@material-tailwind/react/components/Card";
-import CardBody from "@material-tailwind/react/components/Card/CardBody";
-import Input from "@material-tailwind/react/components/Input";
+
 import { onAuthStateChanged } from "firebase/auth";
-import { Select, Option } from "@material-tailwind/react";
+
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import {
   DocumentTextIcon,
