@@ -40,169 +40,188 @@ export const generateDocument = async (data) => {
     children: data.question13 || "",
 
     // Professional License
-    licenses:
-      data.question14.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-      })) || [],
+    licenses: Array.isArray(data?.question14)
+      ? data.question14.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+        }))
+      : [],
 
     // Education
-    degrees:
-      data.question15.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
-    ongoingDegrees:
-      data.question16.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
+    degrees: Array.isArray(data?.question15)
+      ? data.question15.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
+    ongoingDegrees: Array.isArray(data?.question16)
+      ? data.question16.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
 
     // Work Experience
-    workExperience:
-      data.question17.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
+    workExperience: Array.isArray(data?.question17)
+      ? data.question17.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
 
     // Innovation
-    innovations:
-      data.question18.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-      })) || [],
-
-    patents:
-      data.question19.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-      })) || [],
+    innovations: Array.isArray(data?.question18)
+      ? data.question18.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+        }))
+      : [],
+    patents: Array.isArray(data?.question19)
+      ? data.question19.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+        }))
+      : [],
 
     // Research
-    publications:
-      data.question20.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
-    presentations:
-      data.question21.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
-    editorialBoard:
-      data.question22.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
+    publications: Array.isArray(data?.question20)
+      ? data.question20.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
+    presentations: Array.isArray(data?.question21)
+      ? data.question21.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
+    editorialBoard: Array.isArray(data?.question22)
+      ? data.question22.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
 
     // Professional Development
-    professionalDevelopment:
-      data.question23.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
-    professionalMemberships:
-      data.question24.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-      })) || [],
-    linkages:
-      data.question25.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-      })) || [],
-    speakerships:
-      data.question26.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-      })) || [],
-    accreditations:
-      data.question27.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-      })) || [],
-    awards:
-      data.question28.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
-    forums:
-      data.question29.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-      })) || [],
+    professionalDevelopment: Array.isArray(data?.question23)
+      ? data.question23.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
+    professionalMemberships: Array.isArray(data?.question24)
+      ? data.question24.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+        }))
+      : [],
+    linkages: Array.isArray(data?.question25)
+      ? data.question25.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+        }))
+      : [],
+    speakerships: Array.isArray(data?.question26)
+      ? data.question26.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+        }))
+      : [],
+    accreditations: Array.isArray(data?.question27)
+      ? data.question27.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+        }))
+      : [],
+    awards: Array.isArray(data?.question28)
+      ? data.question28.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
+    forums: Array.isArray(data?.question29)
+      ? data.question29.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+        }))
+      : [],
 
     // Community Involvement
-    communityOutreach:
-      data.question30.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-        Column6: row["Column 6"] + "\n",
-      })) || [],
-    externalOutreach:
-      data.question31.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-        Column5: row["Column 5"] + "\n",
-        Column6: row["Column 6"] + "\n",
-      })) || [],
+    communityOutreach: Array.isArray(data?.question30)
+      ? data.question30.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+          Column6: (row["Column 6"] || "") + "\n",
+        }))
+      : [],
+    externalOutreach: Array.isArray(data?.question31)
+      ? data.question31.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+          Column5: (row["Column 5"] || "") + "\n",
+          Column6: (row["Column 6"] || "") + "\n",
+        }))
+      : [],
 
     // Collaboration
-    collaborations:
-      data.question32.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-        Column4: row["Column 4"] + "\n",
-      })) || [],
-    functions:
-      data.question33.map((row) => ({
-        Column1: row["Column 1"] + "\n",
-        Column2: row["Column 2"] + "\n",
-        Column3: row["Column 3"] + "\n",
-      })) || [],
+    collaborations: Array.isArray(data?.question32)
+      ? data.question32.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+          Column4: (row["Column 4"] || "") + "\n",
+        }))
+      : [],
+    functions: Array.isArray(data?.question33)
+      ? data.question33.map((row) => ({
+          Column1: (row["Column 1"] || "") + "\n",
+          Column2: (row["Column 2"] || "") + "\n",
+          Column3: (row["Column 3"] || "") + "\n",
+        }))
+      : [],
   };
 
   // Render the document with the data

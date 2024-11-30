@@ -49,13 +49,13 @@ function SurveyComponent({ uid, email, surveyData }) {
     if (!surveyData) {
       survey.data = surveyData;
     } else {
-      const savedData = localStorage.getItem("surveyData");
+      const savedData = localStorage.getItem("surveyData2");
       if (savedData) {
         survey.data = JSON.parse(savedData);
       }
     }
     survey.onValueChanged.add((sender, options) => {
-      localStorage.setItem("surveyData", JSON.stringify(sender.data));
+      localStorage.setItem("surveyData2", JSON.stringify(sender.data));
     });
   }, [surveyData]);
 
