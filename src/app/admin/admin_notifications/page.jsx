@@ -60,38 +60,6 @@ export default function AdminNotifications() {
     checkAuth();
   }, [user, loading, router]);
 
-  useEffect(() => {
-    const resetTimer = () => setLastActivity(Date.now());
-    const events = [
-      "mousedown",
-      "mousemove",
-      "keypress",
-      "scroll",
-      "touchstart",
-    ];
-
-    // Add event listeners
-    events.forEach((event) => {
-      document.addEventListener(event, resetTimer);
-    });
-
-    // Check for inactivity
-    const interval = setInterval(() => {
-      const now = Date.now();
-      if (now - lastActivity >= TIMEOUT_DURATION) {
-        setShowTimeoutDialog(true);
-      }
-    }, 60000); // Check every minute
-
-    return () => {
-      // Cleanup
-      events.forEach((event) => {
-        document.removeEventListener(event, resetTimer);
-      });
-      clearInterval(interval);
-    };
-  }, [lastActivity]);
-
   const handleTimeout = () => {
     auth.signOut();
     setShowTimeoutDialog(false);

@@ -54,8 +54,10 @@ import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { isAuthenticated } from "../utils/auth";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+
 import Link from "next/link";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BulletinBoard = ({
   announcements,
@@ -191,6 +193,10 @@ export default function Admin() {
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
   const TIMEOUT_DURATION = 600000;
+  const [deleteConfirmation, setDeleteConfirmation] = useState({
+    isOpen: false,
+    announcementId: null,
+  });
 
   useEffect(() => {
     if (loading) return;
@@ -259,7 +265,7 @@ export default function Admin() {
   };
 
   const handleMarkAsRead = async (fileId) => {
-    if (!user) return; // Early return if no user
+    if (!user) return;
 
     try {
       const fileRef = doc(db, "faculty_files", fileId);
@@ -380,9 +386,19 @@ export default function Admin() {
   };
 
   const handleDeleteAnnouncement = async (id) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      announcementId: id,
+    });
+  };
+
+  const confirmDelete = async () => {
     try {
-      await deleteDoc(doc(db, "announcements", id));
+      await deleteDoc(
+        doc(db, "announcements", deleteConfirmation.announcementId)
+      );
       toast.success("Announcement deleted successfully");
+      setDeleteConfirmation({ isOpen: false, announcementId: null });
     } catch (error) {
       console.error("Error deleting announcement:", error);
       toast.error("Failed to delete announcement");
@@ -476,6 +492,34 @@ export default function Admin() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={deleteConfirmation.isOpen}
+        handler={() =>
+          setDeleteConfirmation({ isOpen: false, announcementId: null })
+        }
+      >
+        <DialogHeader>Confirm Delete</DialogHeader>
+        <DialogBody>
+          Are you sure you want to delete this announcement? This action cannot
+          be undone.
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="gray"
+            onClick={() =>
+              setDeleteConfirmation({ isOpen: false, announcementId: null })
+            }
+            className="mr-1"
+          >
+            Cancel
+          </Button>
+          <Button color="red" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </Dialog>
       <Dialog
         open={showTimeoutDialog}
         handler={() => {}}
@@ -492,6 +536,7 @@ export default function Admin() {
           </Button>
         </DialogFooter>
       </Dialog>
+      <ToastContainer />
     </div>
   ) : null;
 }

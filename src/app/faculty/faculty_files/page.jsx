@@ -77,6 +77,8 @@ export default function FacultyFiles() {
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
   const TIMEOUT_DURATION = 600000;
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
 
   useEffect(() => {
     if (loading) return;
@@ -317,23 +319,23 @@ export default function FacultyFiles() {
     );
   };
 
-  const handleDeleteFile = async (file) => {
-    if (!window.confirm(`Are you sure you want to delete ${file.name}?`))
-      return;
+  const handleDeleteFile = async () => {
     try {
-      if (!file.url) {
-        console.error("File URL is missing");
-        return;
-      }
-      const fileRef = ref(storage, file.url);
+      const fileRef = ref(storage, fileToDelete.url);
       await deleteObject(fileRef);
-      console.log("File deleted successfully");
+      await deleteDoc(doc(db, "faculty_files", fileToDelete.id));
       toast.success("File deleted successfully");
-      await deleteDoc(doc(db, "faculty_files", file.id));
+      setDeleteDialogOpen(false);
+      setFileToDelete(null);
     } catch (error) {
-      toast.error("Error deleting file");
       console.error("Error deleting file:", error);
+      toast.error("Failed to delete file");
     }
+  };
+
+  const openDeleteDialog = (file) => {
+    setFileToDelete(file);
+    setDeleteDialogOpen(true);
   };
 
   useEffect(() => {
@@ -455,7 +457,7 @@ export default function FacultyFiles() {
                               />
                               <TrashIcon
                                 className="h-5 w-5 text-red-500 cursor-pointer"
-                                onClick={() => handleDeleteFile(file)}
+                                onClick={() => openDeleteDialog(file)}
                               />
                             </div>
                           </div>
@@ -472,6 +474,30 @@ export default function FacultyFiles() {
             </div>
           </div>
         </div>
+
+        <Dialog
+          open={deleteDialogOpen}
+          handler={() => setDeleteDialogOpen(false)}
+        >
+          <DialogHeader>Confirm Deletion</DialogHeader>
+          <DialogBody>
+            Are you sure you want to delete {fileToDelete?.name}?
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={() => setDeleteDialogOpen(false)}
+              className="mr-1"
+            >
+              Cancel
+            </Button>
+            <Button variant="gradient" color="red" onClick={handleDeleteFile}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </Dialog>
+
         <Dialog
           open={showTimeoutDialog}
           handler={() => {}}

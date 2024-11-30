@@ -53,7 +53,7 @@ import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { isAuthenticated } from "../utils/auth";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Link from "next/link";
 
 const BulletinBoard = ({
@@ -190,6 +190,10 @@ export default function OVPA() {
   const [lastActivity, setLastActivity] = useState(Date.now());
   const [showTimeoutDialog, setShowTimeoutDialog] = useState(false);
   const TIMEOUT_DURATION = 600000;
+  const [deleteConfirmation, setDeleteConfirmation] = useState({
+    isOpen: false,
+    announcementId: null,
+  });
 
   useEffect(() => {
     if (loading) return;
@@ -218,38 +222,6 @@ export default function OVPA() {
     };
     checkAuth();
   }, [user, loading, router]);
-
-  useEffect(() => {
-    const resetTimer = () => setLastActivity(Date.now());
-    const events = [
-      "mousedown",
-      "mousemove",
-      "keypress",
-      "scroll",
-      "touchstart",
-    ];
-
-    // Add event listeners
-    events.forEach((event) => {
-      document.addEventListener(event, resetTimer);
-    });
-
-    // Check for inactivity
-    const interval = setInterval(() => {
-      const now = Date.now();
-      if (now - lastActivity >= TIMEOUT_DURATION) {
-        setShowTimeoutDialog(true);
-      }
-    }, 60000); // Check every minute
-
-    return () => {
-      // Cleanup
-      events.forEach((event) => {
-        document.removeEventListener(event, resetTimer);
-      });
-      clearInterval(interval);
-    };
-  }, [lastActivity]);
 
   const handleTimeout = () => {
     auth.signOut();
@@ -380,9 +352,19 @@ export default function OVPA() {
   };
 
   const handleDeleteAnnouncement = async (id) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      announcementId: id,
+    });
+  };
+
+  const confirmDelete = async () => {
     try {
-      await deleteDoc(doc(db, "announcements", id));
+      await deleteDoc(
+        doc(db, "announcements", deleteConfirmation.announcementId)
+      );
       toast.success("Announcement deleted successfully");
+      setDeleteConfirmation({ isOpen: false, announcementId: null });
     } catch (error) {
       console.error("Error deleting announcement:", error);
       toast.error("Failed to delete announcement");
@@ -405,13 +387,15 @@ export default function OVPA() {
     }
   };
 
-  // Update the Notifications component to handle empty files array
   const Notifications = ({ files }) => (
     <Card className="p-4">
       <div className="flex justify-between items-center mb-4">
         <Typography variant="h6">Notifications</Typography>
-        <Link href="/ovpa/ovpa_notifications">
-          <EyeIcon className="h-5 w-5" />
+        <Link
+          href="/ovpa/ovpa_notifications"
+          className="hover:bg-gray-100 p-2 rounded-full"
+        >
+          <EyeIcon className="h-5 w-5 cursor-pointer" />
         </Link>
       </div>
       {files && files.length > 0 ? (
@@ -483,6 +467,35 @@ export default function OVPA() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={deleteConfirmation.isOpen}
+        handler={() =>
+          setDeleteConfirmation({ isOpen: false, announcementId: null })
+        }
+      >
+        <DialogHeader>Confirm Delete</DialogHeader>
+        <DialogBody>
+          Are you sure you want to delete this announcement? This action cannot
+          be undone.
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="gray"
+            onClick={() =>
+              setDeleteConfirmation({ isOpen: false, announcementId: null })
+            }
+            className="mr-1"
+          >
+            Cancel
+          </Button>
+          <Button color="red" onClick={confirmDelete}>
+            Delete
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
       <Dialog
         open={showTimeoutDialog}
         handler={() => {}}
@@ -499,6 +512,7 @@ export default function OVPA() {
           </Button>
         </DialogFooter>
       </Dialog>
+      <ToastContainer />
     </div>
   ) : null;
 }

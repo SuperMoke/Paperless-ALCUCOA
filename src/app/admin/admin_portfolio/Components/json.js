@@ -1,9 +1,8 @@
 export const json = {
-  questionsOnPageMode: "singlePage",
   title: "PERSONAL PORTFOLIO FOR FACULTY",
   description:
     "Accomplish this personal portfolio for faculty by providing the details of your performance and engagements as a faculty member of the College for the past three academic years in the following areas below. Please provide the required information and supporting documents for each item you indicate.  ",
-
+  completedHtml: "<h1>Thank You</h1>",
   pages: [
     {
       name: "page1",
@@ -46,54 +45,31 @@ export const json = {
           type: "text",
           name: "question7",
           title: "Age",
+          inputType: "number",
         },
         {
           type: "text",
           name: "question8",
           title: "Contact No.",
+          inputType: "tel",
         },
         {
           type: "text",
           name: "question9",
           title: "Email Address",
+          inputType: "email",
         },
         {
           type: "dropdown",
           name: "question10",
           title: "Sex",
-          choices: [
-            {
-              value: "Male",
-              text: "Male",
-            },
-            {
-              value: "Female",
-              text: "Female",
-            },
-          ],
+          choices: ["Male", "Female"],
         },
         {
           type: "dropdown",
           name: "question11",
           title: "Civil Status",
-          choices: [
-            {
-              value: "Single",
-              text: "Single",
-            },
-            {
-              value: "Married",
-              text: "Married",
-            },
-            {
-              value: "Widowed",
-              text: "Widowed",
-            },
-            {
-              value: "Separated",
-              text: "Separated",
-            },
-          ],
+          choices: ["Single", "Married", "Widowed", "Separated"],
         },
         {
           type: "text",
@@ -227,16 +203,7 @@ export const json = {
               name: "Column 5",
               title: "GOVERNMENT SERVICE (YES/NO)",
               cellType: "dropdown",
-              choices: [
-                {
-                  value: "Yes",
-                  text: "Yes",
-                },
-                {
-                  value: "No",
-                  text: "No",
-                },
-              ],
+              choices: ["Yes", "No"],
               storeOthersAsComment: true,
             },
           ],
@@ -319,16 +286,7 @@ export const json = {
               name: "Column 3",
               title: "Indicate whether published or unpublished",
               cellType: "dropdown",
-              choices: [
-                {
-                  value: "Published",
-                  text: "Published",
-                },
-                {
-                  value: "Unpublished",
-                  text: "Unpublished",
-                },
-              ],
+              choices: ["Published", "Unpublished"],
               storeOthersAsComment: true,
             },
             {
@@ -359,30 +317,12 @@ export const json = {
                 "Indicate the level of participation (in-house, city-wide, provincial, regional, national or international)",
               cellType: "dropdown",
               choices: [
-                {
-                  value: "In-House",
-                  text: "In-House",
-                },
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Provincial",
-                  text: "Provincial",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
+                "In-House",
+                "City-Wide",
+                "Provincial",
+                "Regional",
+                "National",
+                "International",
               ],
               storeOthersAsComment: true,
             },
@@ -421,30 +361,12 @@ export const json = {
                 "Scope of the Journal (in-house, city-wide, provincial, regional, national or international)",
               cellType: "dropdown",
               choices: [
-                {
-                  value: "In-House",
-                  text: "In-House",
-                },
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Provincial",
-                  text: "Provincial",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
+                "In-House",
+                "City-Wide",
+                "Provincial",
+                "Regional",
+                "National",
+                "International",
               ],
               storeOthersAsComment: true,
             },
@@ -483,26 +405,11 @@ export const json = {
                 "Indicate if, In-house, City-wide, Regional National, or International",
               cellType: "dropdown",
               choices: [
-                {
-                  value: "In-House",
-                  text: "In-House",
-                },
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
+                "In-House",
+                "City-Wide",
+                "Regional",
+                "National",
+                "International",
               ],
               storeOthersAsComment: true,
             },
@@ -541,26 +448,11 @@ export const json = {
                 "State of In-House, City-wide, Regional, National or International",
               cellType: "dropdown",
               choices: [
-                {
-                  value: "In-House",
-                  text: "In-House",
-                },
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
+                "In-House",
+                "City-Wide",
+                "Regional",
+                "National",
+                "International",
               ],
               storeOthersAsComment: true,
             },
@@ -662,24 +554,7 @@ export const json = {
               name: "Column 3",
               title: "State if City-wide, Regional, National or International",
               cellType: "dropdown",
-              choices: [
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
-              ],
+              choices: ["City-Wide", "Regional", "National", "International"],
               storeOthersAsComment: true,
             },
             {
@@ -713,26 +588,11 @@ export const json = {
                 "State if In-house, City-wide, Regional, National or International",
               cellType: "dropdown",
               choices: [
-                {
-                  value: "In-House",
-                  text: "In-House",
-                },
-                {
-                  value: "City-Wide",
-                  text: "City-Wide",
-                },
-                {
-                  value: "Regional",
-                  text: "Regional",
-                },
-                {
-                  value: "National",
-                  text: "National",
-                },
-                {
-                  value: "International",
-                  text: "International",
-                },
+                "In-House",
+                "City-Wide",
+                "Regional",
+                "National",
+                "International",
               ],
               storeOthersAsComment: true,
             },
@@ -779,16 +639,7 @@ export const json = {
               name: "Column 4",
               title: "State if College-mandated, Institute-mandated",
               cellType: "dropdown",
-              choices: [
-                {
-                  value: "College-Mandated",
-                  text: "College-Mandated",
-                },
-                {
-                  value: "Institute-Mandated",
-                  text: "Institute-Mandated",
-                },
-              ],
+              choices: ["College-Mandated", "Institute-Mandated"],
               storeOthersAsComment: true,
             },
             {
@@ -856,20 +707,7 @@ export const json = {
               title:
                 "Name of Committee/Project/Activity (Indicate if program-based, Institute-based, or College-based)",
               cellType: "dropdown",
-              choices: [
-                {
-                  value: "Program-Based",
-                  text: "Program-Based",
-                },
-                {
-                  value: "Institute-Based",
-                  text: "Institute-Based",
-                },
-                {
-                  value: "College-Based",
-                  text: "College-Based",
-                },
-              ],
+              choices: ["Program-Based", "Institute-Based", "College-Based"],
               storeOthersAsComment: true,
             },
             {
@@ -917,5 +755,5 @@ export const json = {
     },
   ],
   showTitle: false,
-  completedHtml: "<h1>Thank You</h1>",
+  questionsOnPageMode: "singlePage",
 };

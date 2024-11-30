@@ -18,6 +18,12 @@ import { SurveyPDF } from "survey-pdf";
 import { Document, Packer } from "docx";
 import { createPersonalPortfolio } from "./portfolioDocxGenerator";
 import { generateDocument } from "./documentGenerator";
+import {
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 
 const survey = new Model(json);
 
