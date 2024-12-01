@@ -706,9 +706,7 @@ export const json = {
               name: "Column 1",
               title:
                 "Name of Committee/Project/Activity (Indicate if program-based, Institute-based, or College-based)",
-              cellType: "dropdown",
-              choices: ["Program-Based", "Institute-Based", "College-Based"],
-              storeOthersAsComment: true,
+              cellType: "text",
             },
             {
               name: "Column 2",
