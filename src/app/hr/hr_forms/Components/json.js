@@ -917,4 +917,5 @@ export const json = {
   ],
   showTitle: false,
   completedHtml: "<h1>Thank You</h1>",
+  questionsOnPageMode: "singlePage",
 };

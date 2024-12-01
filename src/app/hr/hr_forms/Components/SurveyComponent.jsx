@@ -5,24 +5,7 @@ import "survey-core/defaultV2.min.css";
 import { json } from "./json";
 import { FlatLight } from "survey-core/themes";
 import { SurveyPDF } from "survey-pdf";
-
-// Add the PDF save function
-const savePdf = async (data) => {
-  const surveyPDF = new SurveyPDF(json);
-  surveyPDF.mode = "display";
-  surveyPDF.data = data;
-  const pdfOptions = {
-    fontSize: 12,
-    margins: {
-      left: 10,
-      right: 10,
-      top: 10,
-      bot: 10,
-    },
-    format: [210, 297],
-  };
-  surveyPDF.save("portfolio.pdf", pdfOptions);
-};
+import { generateDocument } from "./documentGenerator";
 
 function SurveyComponent({ surveyData }) {
   const survey = useMemo(() => {
@@ -39,11 +22,11 @@ function SurveyComponent({ surveyData }) {
 
     // Add PDF download button
     model.addNavigationItem({
-      id: "survey_save_as_file",
-      title: "Save as PDF",
-      visibleIndex: 51,
+      id: "survey_save_as_docx",
+      title: "Save as DOCX",
+      visibleIndex: 52,
       action: () => {
-        savePdf(model.data);
+        generateDocument(model.data);
       },
     });
 

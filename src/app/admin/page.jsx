@@ -226,44 +226,6 @@ export default function Admin() {
     checkAuth();
   }, [user, loading, router]);
 
-  useEffect(() => {
-    const resetTimer = () => setLastActivity(Date.now());
-    const events = [
-      "mousedown",
-      "mousemove",
-      "keypress",
-      "scroll",
-      "touchstart",
-    ];
-
-    // Add event listeners
-    events.forEach((event) => {
-      document.addEventListener(event, resetTimer);
-    });
-
-    // Check for inactivity
-    const interval = setInterval(() => {
-      const now = Date.now();
-      if (now - lastActivity >= TIMEOUT_DURATION) {
-        setShowTimeoutDialog(true);
-      }
-    }, 60000); // Check every minute
-
-    return () => {
-      // Cleanup
-      events.forEach((event) => {
-        document.removeEventListener(event, resetTimer);
-      });
-      clearInterval(interval);
-    };
-  }, [lastActivity]);
-
-  const handleTimeout = () => {
-    auth.signOut();
-    setShowTimeoutDialog(false);
-    router.push("/");
-  };
-
   const handleMarkAsRead = async (fileId) => {
     if (!user) return;
 
@@ -425,34 +387,43 @@ export default function Admin() {
     <Card className="p-4">
       <div className="flex justify-between items-center mb-4">
         <Typography variant="h6">Notifications</Typography>
-        <Link href="/admin/admin_notifications">
-          <EyeIcon className="h-5 w-5" />
+        <Link
+          href="/admin/admin_notifications"
+          className="hover:bg-gray-100 p-2 rounded-full"
+        >
+          <EyeIcon className="h-5 w-5 cursor-pointer" />
         </Link>
       </div>
-      {files.map((file) => (
-        <div
-          key={file.id}
-          className="mb-4 flex items-start cursor-pointer hover:bg-gray-50 p-2 rounded"
-          onClick={() => handleMarkAsRead(file.id)}
-        >
-          <BellIcon
-            className={`h-5 w-5 mr-2 ${
-              file.isRead ? "text-gray-400" : "text-blue-500"
-            }`}
-          />
-          <div>
-            <Typography
-              variant="small"
-              className={file.isRead ? "text-gray-500" : "font-bold"}
-            >
-              {file.user_name} uploaded a file under {file.category}
-            </Typography>
-            <Typography variant="small" color="gray">
-              {formatDate(file.timestamp.toDate())}
-            </Typography>
+      {files && files.length > 0 ? (
+        files.map((file) => (
+          <div
+            key={file.id}
+            className="mb-4 flex items-start cursor-pointer hover:bg-gray-50 p-2 rounded"
+            onClick={() => handleMarkAsRead(file.id)}
+          >
+            <BellIcon
+              className={`h-5 w-5 mr-2 ${
+                file.isRead ? "text-gray-400" : "text-blue-500"
+              }`}
+            />
+            <div>
+              <Typography
+                variant="small"
+                className={file.isRead ? "text-gray-500" : "font-bold"}
+              >
+                {file.user_name} uploaded a file under {file.category}
+              </Typography>
+              <Typography variant="small" color="gray">
+                {formatDate(file.timestamp.toDate())}
+              </Typography>
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <Typography variant="small" color="gray">
+          No new notifications
+        </Typography>
+      )}
     </Card>
   );
 
@@ -520,22 +491,7 @@ export default function Admin() {
           </Button>
         </DialogFooter>
       </Dialog>
-      <Dialog
-        open={showTimeoutDialog}
-        handler={() => {}}
-        className="min-w-[350px]"
-      >
-        <DialogHeader>Session Timeout</DialogHeader>
-        <DialogBody>
-          Your session has expired due to inactivity. You will be redirected to
-          the login page.
-        </DialogBody>
-        <DialogFooter>
-          <Button onClick={handleTimeout} color="green">
-            Okay
-          </Button>
-        </DialogFooter>
-      </Dialog>
+
       <ToastContainer />
     </div>
   ) : null;
