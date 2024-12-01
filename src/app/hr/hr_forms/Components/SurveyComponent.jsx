@@ -4,23 +4,27 @@ import { Survey } from "survey-react-ui";
 import "survey-core/defaultV2.min.css";
 import { json } from "./json";
 import { FlatLight } from "survey-core/themes";
-import { SurveyPDF } from "survey-pdf";
 import { generateDocument } from "./documentGenerator";
 
 function SurveyComponent({ surveyData }) {
   const survey = useMemo(() => {
     const model = new Model(json);
 
-    // Make all pages except the first one read-only
-    model.pages.forEach((page, index) => {
-      if (index > 0) {
-        page.questions.forEach((question) => {
-          question.readOnly = true;
-        });
-      }
+    model.showCompleteButton = false;
+
+    // Set all questions to read-only
+    model.getAllQuestions().forEach((question) => {
+      question.readOnly = true;
     });
 
-    // Add PDF download button
+    const personalInfoPage = model.getPageByName("page1");
+    if (personalInfoPage) {
+      personalInfoPage.questions.forEach((question) => {
+        question.readOnly = false;
+      });
+    }
+
+    // Add DOCX download button
     model.addNavigationItem({
       id: "survey_save_as_docx",
       title: "Save as DOCX",
