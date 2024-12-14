@@ -55,6 +55,18 @@ function SurveyComponent({ area }) {
     return Math.round((sum / totalQuestions) * 10) / 10; // Round to 1 decimal place
   };
 
+  survey.addNavigationItem({
+    id: "sv-nav-clear-page",
+    title: "Clear Form",
+    action: () => {
+      survey.currentPage.questions.forEach((question) => {
+        question.value = undefined;
+      });
+    },
+    css: "nav-button",
+    innerCss: "sd-btn nav-input",
+  });
+
   survey.onValueChanged.add((sender, options) => {
     const currentPage = sender.currentPage;
     if (currentPage) {
